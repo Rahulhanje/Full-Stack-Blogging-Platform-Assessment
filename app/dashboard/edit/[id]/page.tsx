@@ -219,16 +219,16 @@ export default function EditPostPage() {
               type="button"
               onClick={() => router.back()}
               className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-medium"
-              disabled={updatePost.isLoading}
+              disabled={updatePost.isPending}
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={updatePost.isLoading || !title.trim() || !content.trim()}
+              disabled={updatePost.isPending || !title.trim() || !content.trim()}
               className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-md font-medium flex items-center"
             >
-              {updatePost.isLoading && <LoadingSpinner size="sm" className="mr-2" />}
+              {updatePost.isPending && <LoadingSpinner size="sm" className="mr-2" />}
               Update Post
             </button>
           </div>

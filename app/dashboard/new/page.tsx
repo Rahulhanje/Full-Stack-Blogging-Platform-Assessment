@@ -178,16 +178,16 @@ console.log('Hello, world!');
               type="button"
               onClick={() => router.back()}
               className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-medium"
-              disabled={createPost.isLoading}
+              disabled={createPost.isPending}
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={createPost.isLoading || !title.trim() || !content.trim()}
+              disabled={createPost.isPending || !title.trim() || !content.trim()}
               className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-md font-medium flex items-center"
             >
-              {createPost.isLoading && <LoadingSpinner size="sm" className="mr-2" />}
+              {createPost.isPending && <LoadingSpinner size="sm" className="mr-2" />}
               {published ? 'Publish Post' : 'Save Draft'}
             </button>
           </div>

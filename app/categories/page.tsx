@@ -189,10 +189,10 @@ export default function CategoriesPage() {
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  disabled={createCategory.isLoading || !newCategoryName.trim()}
+                  disabled={createCategory.isPending || !newCategoryName.trim()}
                   className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium flex items-center"
                 >
-                  {createCategory.isLoading && <LoadingSpinner size="sm" className="mr-2" />}
+                  {createCategory.isPending && <LoadingSpinner size="sm" className="mr-2" />}
                   Create Category
                 </button>
                 <button
@@ -248,10 +248,10 @@ export default function CategoriesPage() {
                       <div className="flex gap-3">
                         <button
                           type="submit"
-                          disabled={updateCategory.isLoading || !editCategoryName.trim()}
+                          disabled={updateCategory.isPending || !editCategoryName.trim()}
                           className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium flex items-center"
                         >
-                          {updateCategory.isLoading && <LoadingSpinner size="sm" className="mr-2" />}
+                          {updateCategory.isPending && <LoadingSpinner size="sm" className="mr-2" />}
                           Update
                         </button>
                         <button
@@ -289,7 +289,7 @@ export default function CategoriesPage() {
                         <button
                           onClick={() => handleDelete(category.id, category.name)}
                           className="text-red-600 hover:text-red-800 font-medium"
-                          disabled={deleteCategory.isLoading}
+                          disabled={deleteCategory.isPending}
                         >
                           Delete
                         </button>

@@ -203,14 +203,14 @@ export default function DashboardPage() {
                               ? 'text-yellow-600 hover:text-yellow-900'
                               : 'text-green-600 hover:text-green-900'
                           }`}
-                          disabled={togglePublish.isLoading}
+                          disabled={togglePublish.isPending}
                         >
                           {post.published ? 'Unpublish' : 'Publish'}
                         </button>
                         <button
                           onClick={() => handleDelete(post.id, post.title)}
                           className="text-red-600 hover:text-red-900"
-                          disabled={deletePost.isLoading}
+                          disabled={deletePost.isPending}
                         >
                           Delete
                         </button>
