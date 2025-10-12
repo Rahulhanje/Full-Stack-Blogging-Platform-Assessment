@@ -227,30 +227,37 @@ export default function DashboardPage() {
                         {formatDate(post.updatedAt)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                        <Link
-                          href={`/dashboard/edit/${post.id}`}
-                          className="text-blue-600 hover:text-blue-900"
-                        >
-                          Edit
-                        </Link>
-                        <button
-                          onClick={() => handleTogglePublish(post.id, post.published)}
-                          className={`${
-                            post.published
-                              ? 'text-yellow-600 hover:text-yellow-900'
-                              : 'text-green-600 hover:text-green-900'
-                          }`}
-                          disabled={togglePublish.isPending}
-                        >
-                          {post.published ? 'Unpublish' : 'Publish'}
-                        </button>
-                        <button
-                          onClick={() => handleDelete(post.id, post.title)}
-                          className="text-red-600 hover:text-red-900"
-                          disabled={deletePost.isPending}
-                        >
-                          Delete
-                        </button>
+                        {/* Only show actions if user owns the post or is admin */}
+                        {(post.authorId === user.id || user.role === 'admin') ? (
+                          <>
+                            <Link
+                              href={`/dashboard/edit/${post.id}`}
+                              className="text-blue-600 hover:text-blue-900"
+                            >
+                              Edit
+                            </Link>
+                            <button
+                              onClick={() => handleTogglePublish(post.id, post.published)}
+                              className={`${
+                                post.published
+                                  ? 'text-yellow-600 hover:text-yellow-900'
+                                  : 'text-green-600 hover:text-green-900'
+                              }`}
+                              disabled={togglePublish.isPending}
+                            >
+                              {post.published ? 'Unpublish' : 'Publish'}
+                            </button>
+                            <button
+                              onClick={() => handleDelete(post.id, post.title)}
+                              className="text-red-600 hover:text-red-900"
+                              disabled={deletePost.isPending}
+                            >
+                              Delete
+                            </button>
+                          </>
+                        ) : (
+                          <span className="text-gray-400 text-sm">No actions available</span>
+                        )}
                       </td>
                     </tr>
                   ))}

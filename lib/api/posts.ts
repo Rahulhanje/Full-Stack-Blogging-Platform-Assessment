@@ -11,16 +11,44 @@ export const postsRouter = router({
     .input(z.object({
       published: z.boolean().optional(),
       categoryId: z.number().optional(),
+      authorId: z.number().optional(), // Add this for filtering by author
     }).optional())
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const conditions = [];
       
-      if (input?.published !== undefined) {
-        conditions.push(eq(posts.published, input.published));
+      // If not authenticated, only show published posts
+      if (!ctx.user) {
+        conditions.push(eq(posts.published, true));
+      } else {
+        // If authenticated and published is specified, use that filter
+        if (input?.published !== undefined) {
+          conditions.push(eq(posts.published, input.published));
+        } else {
+          // If authenticated but no published filter, show published posts + user's own drafts
+          // This is handled in the where clause below
+        }
+      }
+
+      // Filter by author if specified
+      if (input?.authorId) {
+        conditions.push(eq(posts.authorId, input.authorId));
       }
 
       if (input?.categoryId) {
         // Join with postCategories to filter by category
+        let whereConditions = [...conditions];
+        
+        // If authenticated and no explicit published filter, show published + user's drafts
+        if (ctx.user && input?.published === undefined) {
+          whereConditions = [
+            eq(postCategories.categoryId, input.categoryId),
+            // Show published posts OR user's own posts (including drafts)
+            eq(posts.published, true)
+          ];
+        } else {
+          whereConditions.push(eq(postCategories.categoryId, input.categoryId));
+        }
+        
         const postsWithCategory = await db
           .select({
             id: posts.id,
@@ -28,28 +56,81 @@ export const postsRouter = router({
             content: posts.content,
             slug: posts.slug,
             published: posts.published,
+            authorId: posts.authorId,
             createdAt: posts.createdAt,
             updatedAt: posts.updatedAt,
           })
           .from(posts)
           .innerJoin(postCategories, eq(posts.id, postCategories.postId))
-          .where(and(
-            eq(postCategories.categoryId, input.categoryId),
-            ...conditions
-          ))
+          .where(and(...whereConditions))
           .orderBy(desc(posts.createdAt));
+        
+        // If authenticated and no explicit published filter, also get user's drafts
+        if (ctx.user && input?.published === undefined) {
+          const userDrafts = await db
+            .select({
+              id: posts.id,
+              title: posts.title,
+              content: posts.content,
+              slug: posts.slug,
+              published: posts.published,
+              authorId: posts.authorId,
+              createdAt: posts.createdAt,
+              updatedAt: posts.updatedAt,
+            })
+            .from(posts)
+            .innerJoin(postCategories, eq(posts.id, postCategories.postId))
+            .where(and(
+              eq(postCategories.categoryId, input.categoryId),
+              eq(posts.published, false),
+              eq(posts.authorId, ctx.user.id)
+            ))
+            .orderBy(desc(posts.createdAt));
+          
+          // Combine and deduplicate
+          const allPosts = [...postsWithCategory, ...userDrafts];
+          const uniquePosts = allPosts.filter((post, index, self) => 
+            index === self.findIndex(p => p.id === post.id)
+          );
+          return uniquePosts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        }
         
         return postsWithCategory;
       }
 
       // Regular query without category filter
-      const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+      let whereClause;
       
-      return await db
-        .select()
-        .from(posts)
-        .where(whereClause)
-        .orderBy(desc(posts.createdAt));
+      if (ctx.user && input?.published === undefined) {
+        // Show published posts OR user's own posts (including drafts)
+        whereClause = and(...conditions);
+        
+        const publishedPosts = await db
+          .select()
+          .from(posts)
+          .where(and(eq(posts.published, true), ...conditions.filter(c => c !== eq(posts.published, true))))
+          .orderBy(desc(posts.createdAt));
+        
+        const userDrafts = await db
+          .select()
+          .from(posts)
+          .where(and(eq(posts.published, false), eq(posts.authorId, ctx.user.id)))
+          .orderBy(desc(posts.createdAt));
+        
+        // Combine and deduplicate
+        const allPosts = [...publishedPosts, ...userDrafts];
+        const uniquePosts = allPosts.filter((post, index, self) => 
+          index === self.findIndex(p => p.id === post.id)
+        );
+        return uniquePosts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      } else {
+        whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+        return await db
+          .select()
+          .from(posts)
+          .where(whereClause)
+          .orderBy(desc(posts.createdAt));
+      }
     }),
 
   // Get post by slug

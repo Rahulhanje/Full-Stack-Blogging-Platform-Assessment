@@ -62,6 +62,9 @@ export default function EditPostPage() {
     }
   }, [postCategories]);
 
+  // Check authorization - user must own the post or be admin
+  const isAuthorized = user && post && (post.authorId === user.id || user.role === 'admin');
+
   // Show loading while checking authentication
   if (loading) {
     return (
@@ -100,6 +103,22 @@ export default function EditPostPage() {
           <ErrorState 
             title="Post not found"
             message="The post you're trying to edit doesn't exist or has been deleted." 
+          />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Authorization check - show error if user doesn't own the post
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+          <ErrorState 
+            title="Access Denied"
+            message="You don't have permission to edit this post. You can only edit posts that you created." 
           />
         </div>
         <Footer />

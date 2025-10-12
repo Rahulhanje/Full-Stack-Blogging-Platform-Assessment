@@ -40,6 +40,7 @@ export const categories = pgTable('categories', {
   name: text('name').notNull(),
   description: text('description'),
   slug: text('slug').notNull().unique(),
+  authorId: integer('author_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
@@ -55,6 +56,7 @@ export const postCategories = pgTable('post_categories', {
 export const usersRelations = relations(users, ({ many, one }) => ({
   posts: many(posts),
   sessions: many(sessions),
+  categories: many(categories),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -72,8 +74,12 @@ export const postsRelations = relations(posts, ({ many, one }) => ({
   }),
 }));
 
-export const categoriesRelations = relations(categories, ({ many }) => ({
+export const categoriesRelations = relations(categories, ({ many, one }) => ({
   postCategories: many(postCategories),
+  author: one(users, {
+    fields: [categories.authorId],
+    references: [users.id],
+  }),
 }));
 
 export const postCategoriesRelations = relations(postCategories, ({ one }) => ({
