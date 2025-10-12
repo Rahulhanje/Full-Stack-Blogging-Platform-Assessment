@@ -32,7 +32,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading dashboard..." />
         </div>
         <Footer />
@@ -44,7 +44,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
             message="Failed to load dashboard. Please try again." 
             onRetry={() => refetch()}
@@ -82,7 +82,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>

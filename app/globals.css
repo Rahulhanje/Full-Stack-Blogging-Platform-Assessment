@@ -57,3 +57,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Fixed navbar compensation */
+  .pt-navbar {
+    padding-top: 4rem; /* 16 * 0.25rem = 4rem = 64px which matches h-16 navbar */
+  }
+  
+  .mt-navbar {
+    margin-top: 4rem;
+  }
+}

@@ -55,7 +55,7 @@ export default function CategoriesPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading categories..." />
         </div>
         <Footer />
@@ -67,7 +67,7 @@ export default function CategoriesPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
             message="Failed to load categories. Please try again." 
             onRetry={() => refetch()}
@@ -139,7 +139,7 @@ export default function CategoriesPage() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>

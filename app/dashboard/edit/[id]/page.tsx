@@ -55,7 +55,7 @@ export default function EditPostPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading post..." />
         </div>
         <Footer />
@@ -67,7 +67,7 @@ export default function EditPostPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
             title="Post not found"
             message="The post you're trying to edit doesn't exist or has been deleted." 
@@ -111,7 +111,7 @@ export default function EditPostPage() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Edit Post</h1>

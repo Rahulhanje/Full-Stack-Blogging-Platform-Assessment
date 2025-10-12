@@ -23,7 +23,7 @@ export default function BlogPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading blog posts..." />
         </div>
         <Footer />
@@ -35,7 +35,7 @@ export default function BlogPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
             message="Failed to load blog posts. Please try again." 
             onRetry={() => refetchPosts()}
@@ -50,7 +50,7 @@ export default function BlogPage() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Blog</h1>

@@ -23,7 +23,7 @@ export default function BlogPostPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading blog post..." />
         </div>
         <Footer />
@@ -35,7 +35,7 @@ export default function BlogPostPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
             title="Post not found"
             message="The blog post you're looking for doesn't exist or has been removed." 
@@ -56,7 +56,7 @@ export default function BlogPostPage() {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <article className="max-w-4xl mx-auto px-4 py-8">
+      <article className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Back Link */}
         <div className="mb-8">
           <Link href="/blog" className="text-blue-600 hover:text-blue-800 font-medium">
