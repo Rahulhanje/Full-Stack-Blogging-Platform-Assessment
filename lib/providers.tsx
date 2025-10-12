@@ -5,6 +5,7 @@ import { httpBatchLink } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
 import { useState } from 'react';
 import type { AppRouter } from '../lib/api/root';
+import { AuthProvider } from './useAuth';
 
 export const trpc = createTRPCReact<AppRouter>();
 
@@ -28,7 +29,11 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </QueryClientProvider>
     </trpc.Provider>
   );
 }
