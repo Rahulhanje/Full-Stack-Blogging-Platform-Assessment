@@ -5,6 +5,19 @@ import { db } from './db';
 import { users, sessions } from './schema';
 import { eq, and, gt } from 'drizzle-orm';
 
+// Type definitions
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  role: string;
+}
+
+interface Context {
+  req?: Request;
+  user?: User | null;
+}
+
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
 const COOKIE_NAME = 'auth-token';
 
@@ -69,7 +82,7 @@ async function getUserFromRequest(req: Request) {
   }
 }
 
-const t = initTRPC.context<{ req?: Request }>().create();
+const t = initTRPC.context<Context>().create();
 
 // Middleware to check authentication
 const isAuthenticated = t.middleware(async ({ ctx, next }) => {
@@ -97,6 +110,28 @@ const isAuthenticated = t.middleware(async ({ ctx, next }) => {
   });
 });
 
+// Middleware to optionally check authentication (doesn't throw if not authenticated)
+const optionalAuth = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.req) {
+    return next({
+      ctx: {
+        ...ctx,
+        user: null,
+      },
+    });
+  }
+
+  const user = await getUserFromRequest(ctx.req);
+  
+  return next({
+    ctx: {
+      ...ctx,
+      user,
+    },
+  });
+});
+
 export const router = t.router;
 export const publicProcedure = t.procedure;
+export const optionalAuthProcedure = t.procedure.use(optionalAuth);
 export const protectedProcedure = t.procedure.use(isAuthenticated);

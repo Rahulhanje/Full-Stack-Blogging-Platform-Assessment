@@ -1,54 +1,43 @@
 import { z } from 'zod';
-import { publicProcedure, protectedProcedure, router } from '../trpc';
+import { publicProcedure, protectedProcedure, optionalAuthProcedure, router } from '../trpc';
 import { db } from '../db';
 import { posts, postCategories, categories } from '../schema';
 import { createSlug } from '../utils';
 import { eq, desc, and } from 'drizzle-orm';
 
 export const postsRouter = router({
-  // Get all posts
-  getAll: publicProcedure
+  // Get all posts with proper authorization
+  getAll: optionalAuthProcedure
     .input(z.object({
       published: z.boolean().optional(),
       categoryId: z.number().optional(),
-      authorId: z.number().optional(), // Add this for filtering by author
+      authorId: z.number().optional(),
     }).optional())
     .query(async ({ input, ctx }) => {
       const conditions = [];
+      const isAuthenticated = !!ctx.user;
+      const currentUserId = ctx.user ? (ctx.user as any).id : null;
       
-      // If not authenticated, only show published posts
-      if (!ctx.user) {
-        conditions.push(eq(posts.published, true));
-      } else {
-        // If authenticated and published is specified, use that filter
-        if (input?.published !== undefined) {
-          conditions.push(eq(posts.published, input.published));
-        } else {
-          // If authenticated but no published filter, show published posts + user's own drafts
-          // This is handled in the where clause below
-        }
-      }
-
-      // Filter by author if specified
+      // If filtering by specific author, use that filter
       if (input?.authorId) {
         conditions.push(eq(posts.authorId, input.authorId));
       }
+      
+      // Handle published filter based on authentication and intent
+      if (input?.published !== undefined) {
+        // Explicit published filter - respect it
+        conditions.push(eq(posts.published, input.published));
+      } else if (!isAuthenticated) {
+        // Not authenticated - only show published posts
+        conditions.push(eq(posts.published, true));
+      } else if (input?.authorId && input.authorId !== currentUserId) {
+        // Authenticated but viewing another user's posts - only show their published posts
+        conditions.push(eq(posts.published, true));
+      }
+      // If authenticated and no specific filters, show both published and user's drafts (handled below)
 
       if (input?.categoryId) {
         // Join with postCategories to filter by category
-        let whereConditions = [...conditions];
-        
-        // If authenticated and no explicit published filter, show published + user's drafts
-        if (ctx.user && input?.published === undefined) {
-          whereConditions = [
-            eq(postCategories.categoryId, input.categoryId),
-            // Show published posts OR user's own posts (including drafts)
-            eq(posts.published, true)
-          ];
-        } else {
-          whereConditions.push(eq(postCategories.categoryId, input.categoryId));
-        }
-        
         const postsWithCategory = await db
           .select({
             id: posts.id,
@@ -62,75 +51,23 @@ export const postsRouter = router({
           })
           .from(posts)
           .innerJoin(postCategories, eq(posts.id, postCategories.postId))
-          .where(and(...whereConditions))
+          .where(and(
+            eq(postCategories.categoryId, input.categoryId),
+            ...conditions
+          ))
           .orderBy(desc(posts.createdAt));
-        
-        // If authenticated and no explicit published filter, also get user's drafts
-        if (ctx.user && input?.published === undefined) {
-          const userDrafts = await db
-            .select({
-              id: posts.id,
-              title: posts.title,
-              content: posts.content,
-              slug: posts.slug,
-              published: posts.published,
-              authorId: posts.authorId,
-              createdAt: posts.createdAt,
-              updatedAt: posts.updatedAt,
-            })
-            .from(posts)
-            .innerJoin(postCategories, eq(posts.id, postCategories.postId))
-            .where(and(
-              eq(postCategories.categoryId, input.categoryId),
-              eq(posts.published, false),
-              eq(posts.authorId, ctx.user.id)
-            ))
-            .orderBy(desc(posts.createdAt));
-          
-          // Combine and deduplicate
-          const allPosts = [...postsWithCategory, ...userDrafts];
-          const uniquePosts = allPosts.filter((post, index, self) => 
-            index === self.findIndex(p => p.id === post.id)
-          );
-          return uniquePosts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        }
         
         return postsWithCategory;
       }
 
       // Regular query without category filter
-      let whereClause;
+      const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
       
-      if (ctx.user && input?.published === undefined) {
-        // Show published posts OR user's own posts (including drafts)
-        whereClause = and(...conditions);
-        
-        const publishedPosts = await db
-          .select()
-          .from(posts)
-          .where(and(eq(posts.published, true), ...conditions.filter(c => c !== eq(posts.published, true))))
-          .orderBy(desc(posts.createdAt));
-        
-        const userDrafts = await db
-          .select()
-          .from(posts)
-          .where(and(eq(posts.published, false), eq(posts.authorId, ctx.user.id)))
-          .orderBy(desc(posts.createdAt));
-        
-        // Combine and deduplicate
-        const allPosts = [...publishedPosts, ...userDrafts];
-        const uniquePosts = allPosts.filter((post, index, self) => 
-          index === self.findIndex(p => p.id === post.id)
-        );
-        return uniquePosts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      } else {
-        whereClause = conditions.length > 0 ? and(...conditions) : undefined;
-        return await db
-          .select()
-          .from(posts)
-          .where(whereClause)
-          .orderBy(desc(posts.createdAt));
-      }
+      return await db
+        .select()
+        .from(posts)
+        .where(whereClause)
+        .orderBy(desc(posts.createdAt));
     }),
 
   // Get post by slug
@@ -197,21 +134,19 @@ export const postsRouter = router({
           content: input.content,
           slug: finalSlug,
           published: input.published,
-          authorId: ctx.user.id,
+          authorId: (ctx.user as any).id,
           updatedAt: new Date(),
         })
         .returning();
 
       // Add categories if provided
       if (input.categoryIds && input.categoryIds.length > 0) {
-        await db
-          .insert(postCategories)
-          .values(
-            input.categoryIds.map(categoryId => ({
-              postId: newPost.id,
-              categoryId,
-            }))
-          );
+        const categoryInserts = input.categoryIds.map(categoryId => ({
+          postId: newPost.id,
+          categoryId,
+        }));
+        
+        await db.insert(postCategories).values(categoryInserts);
       }
 
       return newPost;
@@ -229,7 +164,7 @@ export const postsRouter = router({
     .mutation(async ({ input, ctx }) => {
       const { id, categoryIds, ...updateData } = input;
       
-      // Check if the user owns this post or is an admin
+      // Get the post to check ownership
       const existingPost = await db
         .select()
         .from(posts)
@@ -240,8 +175,9 @@ export const postsRouter = router({
         throw new Error('Post not found');
       }
       
-      if (existingPost[0].authorId !== ctx.user.id && ctx.user.role !== 'admin') {
-        throw new Error('Not authorized to update this post');
+      // Check if user owns this post or is admin
+      if (existingPost[0].authorId !== (ctx.user as any).id && (ctx.user as any).role !== 'admin') {
+        throw new Error('Unauthorized: You can only edit your own posts');
       }
       
       // If title is being updated, update slug too
@@ -249,13 +185,13 @@ export const postsRouter = router({
         const newSlug = createSlug(updateData.title);
         
         // Check if slug already exists (excluding current post)
-        const existingSlugPost = await db
+        const existingWithSlug = await db
           .select()
           .from(posts)
           .where(and(eq(posts.slug, newSlug), eq(posts.id, id)))
           .limit(1);
         
-        if (existingSlugPost.length === 0) {
+        if (existingWithSlug.length === 0) {
           const slugExists = await db
             .select()
             .from(posts)
@@ -282,20 +218,16 @@ export const postsRouter = router({
       // Update categories if provided
       if (categoryIds !== undefined) {
         // Remove existing categories
-        await db
-          .delete(postCategories)
-          .where(eq(postCategories.postId, id));
-
+        await db.delete(postCategories).where(eq(postCategories.postId, id));
+        
         // Add new categories
         if (categoryIds.length > 0) {
-          await db
-            .insert(postCategories)
-            .values(
-              categoryIds.map(categoryId => ({
-                postId: id,
-                categoryId,
-              }))
-            );
+          const categoryInserts = categoryIds.map(categoryId => ({
+            postId: id,
+            categoryId,
+          }));
+          
+          await db.insert(postCategories).values(categoryInserts);
         }
       }
 
@@ -306,7 +238,7 @@ export const postsRouter = router({
   delete: protectedProcedure
     .input(z.number())
     .mutation(async ({ input, ctx }) => {
-      // Check if the user owns this post or is an admin
+      // Get the post to check ownership
       const existingPost = await db
         .select()
         .from(posts)
@@ -317,8 +249,9 @@ export const postsRouter = router({
         throw new Error('Post not found');
       }
       
-      if (existingPost[0].authorId !== ctx.user.id && ctx.user.role !== 'admin') {
-        throw new Error('Not authorized to delete this post');
+      // Check if user owns this post or is admin
+      if (existingPost[0].authorId !== (ctx.user as any).id && (ctx.user as any).role !== 'admin') {
+        throw new Error('Unauthorized: You can only delete your own posts');
       }
 
       const [deletedPost] = await db
@@ -329,7 +262,7 @@ export const postsRouter = router({
       return deletedPost;
     }),
 
-  // Get post categories
+  // Get categories for a post
   getCategories: publicProcedure
     .input(z.number())
     .query(async ({ input }) => {
@@ -337,7 +270,6 @@ export const postsRouter = router({
         .select({
           id: categories.id,
           name: categories.name,
-          description: categories.description,
           slug: categories.slug,
         })
         .from(postCategories)

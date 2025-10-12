@@ -25,6 +25,7 @@ export default function DashboardPage() {
 
   const { data: posts, isLoading, error, refetch } = trpc.posts.getAll.useQuery({
     published: showPublished,
+    authorId: user?.id, // Filter by current user's ID
   }, {
     enabled: !!user, // Only fetch when user is authenticated
   });
