@@ -28,17 +28,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await fetch('/api/auth/me', {
         credentials: 'include',
+        cache: 'no-cache', // Prevent aggressive caching
       });
 
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
       } else {
-        setUser(null);
+        // Only set user to null if we get a 401, not on network errors
+        if (response.status === 401) {
+          setUser(null);
+        }
       }
     } catch (error) {
       console.error('Auth check failed:', error);
-      setUser(null);
+      // Don't clear user on network errors, only on auth failures
     } finally {
       setLoading(false);
     }
