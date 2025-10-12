@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { db } from '../../../../lib/db';
-import { users } from '../../../../lib/schema';
+import { users, sessions } from '../../../../lib/schema';
 import { hashPassword, generateToken } from '../../../../lib/auth';
 import { eq } from 'drizzle-orm';
 
@@ -57,6 +57,16 @@ export async function POST(request: Request) {
       email: user.email,
       name: user.name,
       role: user.role,
+    });
+
+    // Create session in database
+    const sessionDuration = 7 * 24 * 60 * 60 * 1000; // 7 days
+    const expiresAt = new Date(Date.now() + sessionDuration);
+
+    await db.insert(sessions).values({
+      userId: user.id,
+      token,
+      expiresAt,
     });
 
     // Set cookie (we'll handle this in the client for now)

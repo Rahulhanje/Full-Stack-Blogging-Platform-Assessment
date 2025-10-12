@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { trpc } from '../../../../lib/providers';
+import { useAuth } from '../../../../lib/useAuth';
 import { Navbar } from '../../../../components/Navbar';
 import { Footer } from '../../../../components/Footer';
 import { LoadingState } from '../../../../components/LoadingSpinner';
@@ -12,6 +13,7 @@ import { LoadingSpinner } from '../../../../components/LoadingSpinner';
 export default function EditPostPage() {
   const params = useParams();
   const router = useRouter();
+  const { user, loading } = useAuth();
   const postId = parseInt(params.id as string);
   
   const [title, setTitle] = useState('');
@@ -20,10 +22,19 @@ export default function EditPostPage() {
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [preview, setPreview] = useState(false);
 
-  const { data: post, isLoading: postLoading, error: postError } = trpc.posts.getById.useQuery(postId);
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [user, loading, router]);
+
+  const { data: post, isLoading: postLoading, error: postError } = trpc.posts.getById.useQuery(postId, {
+    enabled: !!user && !!postId,
+  });
   const { data: categories } = trpc.categories.getAll.useQuery();
   const { data: postCategories } = trpc.posts.getCategories.useQuery(postId, {
-    enabled: !!postId,
+    enabled: !!user && !!postId,
   });
 
   const updatePost = trpc.posts.update.useMutation({
@@ -50,6 +61,24 @@ export default function EditPostPage() {
       setSelectedCategories(postCategories.map(cat => cat.id));
     }
   }, [postCategories]);
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+          <LoadingState message="Loading..." />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!user) {
+    return null;
+  }
 
   if (postLoading) {
     return (

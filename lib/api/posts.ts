@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
+import { publicProcedure, protectedProcedure, router } from '../trpc';
 import { db } from '../db';
 import { posts, postCategories, categories } from '../schema';
 import { createSlug } from '../utils';
@@ -87,14 +87,14 @@ export const postsRouter = router({
     }),
 
   // Create post
-  create: publicProcedure
+  create: protectedProcedure
     .input(z.object({
       title: z.string().min(1, 'Title is required'),
       content: z.string().min(1, 'Content is required'),
       published: z.boolean().default(false),
       categoryIds: z.array(z.number()).optional(),
     }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const slug = createSlug(input.title);
       
       // Check if slug already exists
@@ -116,6 +116,7 @@ export const postsRouter = router({
           content: input.content,
           slug: finalSlug,
           published: input.published,
+          authorId: ctx.user.id,
           updatedAt: new Date(),
         })
         .returning();
@@ -136,7 +137,7 @@ export const postsRouter = router({
     }),
 
   // Update post
-  update: publicProcedure
+  update: protectedProcedure
     .input(z.object({
       id: z.number(),
       title: z.string().min(1, 'Title is required').optional(),
@@ -144,21 +145,36 @@ export const postsRouter = router({
       published: z.boolean().optional(),
       categoryIds: z.array(z.number()).optional(),
     }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const { id, categoryIds, ...updateData } = input;
+      
+      // Check if the user owns this post or is an admin
+      const existingPost = await db
+        .select()
+        .from(posts)
+        .where(eq(posts.id, id))
+        .limit(1);
+      
+      if (existingPost.length === 0) {
+        throw new Error('Post not found');
+      }
+      
+      if (existingPost[0].authorId !== ctx.user.id && ctx.user.role !== 'admin') {
+        throw new Error('Not authorized to update this post');
+      }
       
       // If title is being updated, update slug too
       if (updateData.title) {
         const newSlug = createSlug(updateData.title);
         
         // Check if slug already exists (excluding current post)
-        const existingPost = await db
+        const existingSlugPost = await db
           .select()
           .from(posts)
           .where(and(eq(posts.slug, newSlug), eq(posts.id, id)))
           .limit(1);
         
-        if (existingPost.length === 0) {
+        if (existingSlugPost.length === 0) {
           const slugExists = await db
             .select()
             .from(posts)
@@ -206,17 +222,28 @@ export const postsRouter = router({
     }),
 
   // Delete post
-  delete: publicProcedure
+  delete: protectedProcedure
     .input(z.number())
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      // Check if the user owns this post or is an admin
+      const existingPost = await db
+        .select()
+        .from(posts)
+        .where(eq(posts.id, input))
+        .limit(1);
+      
+      if (existingPost.length === 0) {
+        throw new Error('Post not found');
+      }
+      
+      if (existingPost[0].authorId !== ctx.user.id && ctx.user.role !== 'admin') {
+        throw new Error('Not authorized to delete this post');
+      }
+
       const [deletedPost] = await db
         .delete(posts)
         .where(eq(posts.id, input))
         .returning();
-
-      if (!deletedPost) {
-        throw new Error('Post not found');
-      }
 
       return deletedPost;
     }),

@@ -6,7 +6,9 @@ const handler = (req: Request) =>
     endpoint: '/api/trpc',
     req,
     router: appRouter,
-    createContext: () => ({}),
+    createContext: ({ req }) => ({
+      req, // Pass the request to the context so middleware can access cookies
+    }),
   });
 
 export { handler as GET, handler as POST };

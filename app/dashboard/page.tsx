@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { trpc } from '../../lib/providers';
+import { useAuth } from '../../lib/useAuth';
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { LoadingState } from '../../components/LoadingSpinner';
@@ -10,15 +12,29 @@ import { ErrorState } from '../../components/ErrorState';
 import { formatDate } from '../../lib/utils';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { user, loading } = useAuth();
   const [showPublished, setShowPublished] = useState<boolean | undefined>(undefined);
   
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [user, loading, router]);
+
   const { data: posts, isLoading, error, refetch } = trpc.posts.getAll.useQuery({
     published: showPublished,
+  }, {
+    enabled: !!user, // Only fetch when user is authenticated
   });
 
   const deletePost = trpc.posts.delete.useMutation({
     onSuccess: () => {
       refetch();
+    },
+    onError: (error) => {
+      alert(`Failed to delete post: ${error.message}`);
     },
   });
 
@@ -26,7 +42,28 @@ export default function DashboardPage() {
     onSuccess: () => {
       refetch();
     },
+    onError: (error) => {
+      alert(`Failed to update post: ${error.message}`);
+    },
   });
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 py-8 pt-24">
+          <LoadingState />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!user) {
+    return null;
+  }
 
   if (isLoading) {
     return (

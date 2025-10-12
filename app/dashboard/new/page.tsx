@@ -3,17 +3,26 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { trpc } from '../../../lib/providers';
+import { useAuth } from '../../../lib/useAuth';
 import { Navbar } from '../../../components/Navbar';
 import { Footer } from '../../../components/Footer';
 import { LoadingSpinner } from '../../../components/LoadingSpinner';
 
 export default function NewPostPage() {
   const router = useRouter();
+  const { user, loading } = useAuth();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [published, setPublished] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [preview, setPreview] = useState(false);
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [user, loading, router]);
 
   const { data: categories } = trpc.categories.getAll.useQuery();
 
@@ -22,9 +31,30 @@ export default function NewPostPage() {
       router.push(`/dashboard`);
     },
     onError: (error) => {
-      alert(`Failed to create post: ${error.message}`);
+      console.error('Create post error:', error);
+      // More specific error messages
+      if (error.data?.code === 'UNAUTHORIZED') {
+        alert('You must be logged in to create a post. Redirecting to login...');
+        router.push('/auth/signin');
+      } else {
+        alert(`Failed to create post: ${error.message}`);
+      }
     },
   });
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!user) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
