@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '../../../lib/useAuth';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export default function SignUpPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { register } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,36 +65,14 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+      const success = await register(formData.name, formData.email, formData.password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (data.details) {
-          // Handle validation errors from server
-          const serverErrors: Record<string, string> = {};
-          data.details.forEach((error: any) => {
-            serverErrors[error.path[0]] = error.message;
-          });
-          setErrors(serverErrors);
-        } else {
-          setErrors({ general: data.error || 'Signup failed' });
-        }
-        return;
+      if (success) {
+        // Signup successful, redirect to dashboard
+        router.push('/dashboard');
+      } else {
+        setErrors({ general: 'Email already exists or signup failed' });
       }
-
-      // Signup successful, redirect to dashboard
-      router.push('/dashboard');
     } catch (error) {
       console.error('Signup error:', error);
       setErrors({ general: 'Network error. Please try again.' });

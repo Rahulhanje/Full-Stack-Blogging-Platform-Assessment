@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '../../../lib/useAuth';
 
 export default function SignInPage() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ export default function SignInPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,33 +51,14 @@ export default function SignInPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const success = await login(formData.email, formData.password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (data.details) {
-          // Handle validation errors from server
-          const serverErrors: Record<string, string> = {};
-          data.details.forEach((error: any) => {
-            serverErrors[error.path[0]] = error.message;
-          });
-          setErrors(serverErrors);
-        } else {
-          setErrors({ general: data.error || 'Sign in failed' });
-        }
-        return;
+      if (success) {
+        // Sign in successful, redirect to dashboard
+        router.push('/dashboard');
+      } else {
+        setErrors({ general: 'Invalid email or password' });
       }
-
-      // Sign in successful, redirect to dashboard
-      router.push('/dashboard');
-      router.refresh(); // Refresh to update auth state
     } catch (error) {
       console.error('Sign in error:', error);
       setErrors({ general: 'Network error. Please try again.' });
