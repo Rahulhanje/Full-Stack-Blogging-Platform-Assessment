@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { trpc } from '../../../../lib/providers';
 import { useAuth } from '../../../../lib/useAuth';
-import { Navbar } from '../../../../components/Navbar';
-import { Footer } from '../../../../components/Footer';
 import { LoadingState } from '../../../../components/LoadingSpinner';
 import { ErrorState } from '../../../../components/ErrorState';
 import { LoadingSpinner } from '../../../../components/LoadingSpinner';
@@ -68,12 +66,8 @@ export default function EditPostPage() {
   // Show loading while checking authentication
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-          <LoadingState message="Loading..." />
-        </div>
-        <Footer />
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <LoadingState message="Loading..." />
       </div>
     );
   }
@@ -85,27 +79,19 @@ export default function EditPostPage() {
 
   if (postLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-          <LoadingState message="Loading post..." />
-        </div>
-        <Footer />
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <LoadingState message="Loading post..." />
       </div>
     );
   }
 
   if (postError || !post) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-          <ErrorState 
-            title="Post not found"
-            message="The post you're trying to edit doesn't exist or has been deleted." 
-          />
-        </div>
-        <Footer />
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <ErrorState 
+          title="Post not found"
+          message="The post you're trying to edit doesn't exist or has been deleted." 
+        />
       </div>
     );
   }
@@ -113,15 +99,11 @@ export default function EditPostPage() {
   // Authorization check - show error if user doesn't own the post
   if (!isAuthorized) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-          <ErrorState 
-            title="Access Denied"
-            message="You don't have permission to edit this post. You can only edit posts that you created." 
-          />
-        </div>
-        <Footer />
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <ErrorState 
+          title="Access Denied"
+          message="You don't have permission to edit this post. You can only edit posts that you created." 
+        />
       </div>
     );
   }
@@ -156,17 +138,14 @@ export default function EditPostPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Edit Post</h1>
-          <p className="text-gray-600">Update your blog post</p>
-        </div>
+    <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Edit Post</h1>
+        <p className="text-gray-600">Update your blog post</p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div className="bg-white rounded-lg shadow-sm p-6">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
@@ -282,8 +261,6 @@ export default function EditPostPage() {
           </div>
         </form>
       </div>
-      
-      <Footer />
-    </div>
+   
   );
 }

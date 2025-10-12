@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 import { trpc } from '../../lib/providers';
-import { Navbar } from '../../components/Navbar';
-import { Footer } from '../../components/Footer';
 import { LoadingState } from '../../components/LoadingSpinner';
 import { ErrorState } from '../../components/ErrorState';
 import { formatDate, calculateReadingTime } from '../../lib/utils';
@@ -21,43 +19,32 @@ export default function BlogPage() {
 
   if (postsLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-          <LoadingState message="Loading blog posts..." />
-        </div>
-        <Footer />
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <LoadingState message="Loading blog posts..." />
       </div>
     );
   }
 
   if (postsError) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-          <ErrorState 
-            message="Failed to load blog posts. Please try again." 
-            onRetry={() => refetchPosts()}
-          />
-        </div>
-        <Footer />
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+        <ErrorState 
+          message="Failed to load blog posts. Please try again." 
+          onRetry={() => refetchPosts()}
+        />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Blog</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover insights, tutorials, and stories from our community
-          </p>
-        </div>
+    <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
+      {/* Header */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Blog</h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          Discover insights, tutorials, and stories from our community
+        </p>
+      </div>
 
         {/* Category Filter */}
         <div className="mb-8">
@@ -140,9 +127,7 @@ export default function BlogPage() {
           )}
         </div>
       </div>
-      
-      <Footer />
-    </div>
+    
   );
 }
 

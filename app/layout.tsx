@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TRPCProvider } from "../lib/providers";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,7 +28,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased min-h-screen bg-background text-foreground">
-        <TRPCProvider>{children}</TRPCProvider>
+        <TRPCProvider>
+          <div className="min-h-screen bg-gray-50 flex flex-col">
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </TRPCProvider>
       </body>
     </html>
   );

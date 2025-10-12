@@ -4,8 +4,6 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import { trpc } from '../../../lib/providers';
-import { Navbar } from '../../../components/Navbar';
-import { Footer } from '../../../components/Footer';
 import { LoadingState } from '../../../components/LoadingSpinner';
 import { ErrorState } from '../../../components/ErrorState';
 import { formatDate, calculateReadingTime } from '../../../lib/utils';
@@ -22,11 +20,9 @@ export default function BlogPostPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading blog post..." />
         </div>
-        <Footer />
       </div>
     );
   }
@@ -34,7 +30,7 @@ export default function BlogPostPage() {
   if (error || !post) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
             title="Post not found"
@@ -47,15 +43,13 @@ export default function BlogPostPage() {
             </Link>
           </div>
         </div>
-        <Footer />
+        
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
       <article className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Back Link */}
         <div className="mb-8">
@@ -162,8 +156,6 @@ export default function BlogPostPage() {
           </div>
         </div>
       </article>
-      
-      <Footer />
     </div>
   );
 }

@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { trpc } from '../../../lib/providers';
 import { useAuth } from '../../../lib/useAuth';
-import { Navbar } from '../../../components/Navbar';
-import { Footer } from '../../../components/Footer';
 import { LoadingSpinner } from '../../../components/LoadingSpinner';
 
 export default function NewPostPage() {
@@ -65,11 +63,13 @@ export default function NewPostPage() {
     }
 
     try {
+      if (createPost.isPending) return;
+
       await createPost.mutateAsync({
-        title: title.trim(),
-        content: content.trim(),
-        published,
-        categoryIds: selectedCategories,
+      title: title.trim(),
+      content: content.trim(),
+      published,
+      categoryIds: Array.from(new Set(selectedCategories)),
       });
     } catch (error) {
       // Error is handled in onError
@@ -86,17 +86,16 @@ export default function NewPostPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+     
       
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Create New Post</h1>
           <p className="text-gray-600">Write and publish your blog post</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title */}
+         
           <div className="bg-white rounded-lg shadow-sm p-6">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
               Title
@@ -112,7 +111,7 @@ export default function NewPostPage() {
             />
           </div>
 
-          {/* Categories */}
+        
           {categories && categories.length > 0 && (
             <div className="bg-white rounded-lg shadow-sm p-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -137,7 +136,7 @@ export default function NewPostPage() {
             </div>
           )}
 
-          {/* Content Editor */}
+        
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-4">
               <label htmlFor="content" className="block text-sm font-medium text-gray-700">
@@ -181,7 +180,7 @@ console.log('Hello, world!');
             )}
           </div>
 
-          {/* Publish Options */}
+     
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center">
               <input
@@ -202,7 +201,7 @@ console.log('Hello, world!');
             </p>
           </div>
 
-          {/* Actions */}
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-end">
             <button
               type="button"
@@ -222,9 +221,7 @@ console.log('Hello, world!');
             </button>
           </div>
         </form>
-      </div>
-      
-      <Footer />
+      </div> 
     </div>
   );
 }

@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { trpc } from '../../lib/providers';
-import { Navbar } from '../../components/Navbar';
-import { Footer } from '../../components/Footer';
 import { LoadingState } from '../../components/LoadingSpinner';
 import { ErrorState } from '../../components/ErrorState';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
@@ -54,11 +52,11 @@ export default function CategoriesPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading categories..." />
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
@@ -66,14 +64,14 @@ export default function CategoriesPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
             message="Failed to load categories. Please try again." 
             onRetry={() => refetch()}
           />
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
@@ -136,9 +134,7 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
+    <div className="min-h-screen bg-gray-50">      
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
@@ -320,8 +316,6 @@ export default function CategoriesPage() {
           )}
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 }

@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { trpc } from '../../lib/providers';
 import { useAuth } from '../../lib/useAuth';
-import { Navbar } from '../../components/Navbar';
-import { Footer } from '../../components/Footer';
 import { LoadingState } from '../../components/LoadingSpinner';
 import { ErrorState } from '../../components/ErrorState';
 import { formatDate } from '../../lib/utils';
@@ -52,11 +50,9 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
         <div className="max-w-7xl mx-auto px-4 py-8 pt-24">
           <LoadingState />
         </div>
-        <Footer />
       </div>
     );
   }
@@ -69,11 +65,11 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+      
         <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading dashboard..." />
         </div>
-        <Footer />
+        
       </div>
     );
   }
@@ -81,14 +77,14 @@ export default function DashboardPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
+       
         <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
             message="Failed to load dashboard. Please try again." 
             onRetry={() => refetch()}
           />
         </div>
-        <Footer />
+      
       </div>
     );
   }
@@ -118,10 +114,8 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
       
       <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
@@ -228,7 +222,7 @@ export default function DashboardPage() {
                         {formatDate(post.updatedAt)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                        {/* Only show actions if user owns the post or is admin */}
+                     
                         {(post.authorId === user.id || user.role === 'admin') ? (
                           <>
                             <Link
@@ -286,8 +280,6 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
-      
-      <Footer />
     </div>
   );
 }
