@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
 import { trpc } from '../../lib/providers';
 import { LoadingState } from '../../components/LoadingSpinner';
 import { ErrorState } from '../../components/ErrorState';
@@ -95,9 +96,21 @@ export default function BlogPage() {
                     </Link>
                   </h2>
                   
-                  <p className="text-gray-600 mb-4 line-clamp-3">
-                    {post.content.substring(0, 200)}...
-                  </p>
+                  <div className="text-gray-600 mb-4 line-clamp-3 prose prose-sm max-w-none">
+                    <ReactMarkdown
+                      components={{
+                        p: ({ children }) => <p className="text-gray-600">{children}</p>,
+                        h1: ({ children }) => <h3 className="text-lg font-semibold text-gray-800">{children}</h3>,
+                        h2: ({ children }) => <h4 className="text-base font-semibold text-gray-800">{children}</h4>,
+                        h3: ({ children }) => <h5 className="text-sm font-semibold text-gray-800">{children}</h5>,
+                        code: ({ children }) => <code className="bg-gray-100 px-1 rounded text-sm">{children}</code>,
+                        strong: ({ children }) => <strong className="font-semibold text-gray-800">{children}</strong>,
+                        em: ({ children }) => <em className="italic">{children}</em>,
+                      }}
+                    >
+                      {post.content.length > 200 ? `${post.content.substring(0, 200)}...` : post.content}
+                    </ReactMarkdown>
+                  </div>
                   
                   <div className="flex items-center justify-between">
                     <Link 

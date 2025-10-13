@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
 import { trpc } from '../../lib/providers';
 import { useAuth } from '../../lib/useAuth';
 import { LoadingState } from '../../components/LoadingSpinner';
@@ -199,8 +200,20 @@ export default function DashboardPage() {
                               {post.title}
                             </Link>
                           </div>
-                          <div className="text-sm text-gray-500 truncate max-w-xs">
-                            {post.content.substring(0, 100)}...
+                          <div className="text-sm text-gray-500 truncate max-w-xs prose prose-sm">
+                            <ReactMarkdown
+                              components={{
+                                p: ({ children }) => <span className="text-gray-500">{children}</span>,
+                                h1: ({ children }) => <span className="font-medium">{children}</span>,
+                                h2: ({ children }) => <span className="font-medium">{children}</span>,
+                                h3: ({ children }) => <span className="font-medium">{children}</span>,
+                                code: ({ children }) => <code className="bg-gray-100 px-1 rounded text-xs">{children}</code>,
+                                strong: ({ children }) => <strong className="font-medium">{children}</strong>,
+                                em: ({ children }) => <em>{children}</em>,
+                              }}
+                            >
+                              {post.content.length > 100 ? `${post.content.substring(0, 100)}...` : post.content}
+                            </ReactMarkdown>
                           </div>
                         </div>
                       </td>
