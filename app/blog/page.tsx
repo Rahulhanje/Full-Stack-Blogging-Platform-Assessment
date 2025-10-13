@@ -6,15 +6,34 @@ import { trpc } from '../../lib/providers';
 import { LoadingState } from '../../components/LoadingSpinner';
 import { ErrorState } from '../../components/ErrorState';
 import { formatDate, calculateReadingTime } from '../../lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import SearchBar from '../../components/SearchBar';
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('q');
+  const categoryFromUrl = searchParams.get('category');
   
-  const { data: posts, isLoading: postsLoading, error: postsError, refetch: refetchPosts } = trpc.posts.getAll.useQuery({
-    published: true,
-    categoryId: selectedCategory,
-  });
+  // Set category from URL if present
+  useEffect(() => {
+    if (categoryFromUrl) {
+      setSelectedCategory(parseInt(categoryFromUrl));
+    }
+  }, [categoryFromUrl]);
+  
+  // Use search if query present, otherwise get all posts
+  const { data: posts, isLoading: postsLoading, error: postsError, refetch: refetchPosts } = searchQuery 
+    ? trpc.posts.search.useQuery({
+        query: searchQuery,
+        categoryId: selectedCategory,
+        limit: 50,
+      })
+    : trpc.posts.getAll.useQuery({
+        published: true,
+        categoryId: selectedCategory,
+      });
 
   const { data: categories, isLoading: categoriesLoading } = trpc.categories.getAll.useQuery();
 
@@ -41,10 +60,36 @@ export default function BlogPage() {
     <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Blog</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Discover insights, tutorials, and stories from our community
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          {searchQuery ? `Search Results for "${searchQuery}"` : 'Our Blog'}
+        </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-4">
+          {searchQuery 
+            ? `Found ${posts?.length || 0} post${posts?.length !== 1 ? 's' : ''} matching your search`
+            : 'Discover insights, tutorials, and stories from our community'
+          }
         </p>
+        
+        {searchQuery && (
+          <div className="flex justify-center">
+            <Link 
+              href="/blog" 
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Clear Search
+            </Link>
+          </div>
+        )}
+      </div>
+      
+      {/* Search Bar (Desktop only - mobile has it in navbar) */}
+      <div className="hidden md:block mb-8">
+        <div className="max-w-2xl mx-auto">
+          <SearchBar placeholder="Search posts..." />
+        </div>
       </div>
 
         {/* Category Filter */}

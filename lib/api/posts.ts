@@ -3,7 +3,7 @@ import { publicProcedure, protectedProcedure, optionalAuthProcedure, router } fr
 import { db } from '../db';
 import { posts, postCategories, categories } from '../schema';
 import { createSlug } from '../utils';
-import { eq, desc, and } from 'drizzle-orm';
+import { eq, desc, and, or, ilike, sql } from 'drizzle-orm';
 
 export const postsRouter = router({
   // Get all posts with proper authorization
@@ -277,5 +277,96 @@ export const postsRouter = router({
         .where(eq(postCategories.postId, input));
       
       return result;
+    }),
+
+  // Search posts
+  search: publicProcedure
+    .input(z.object({
+      query: z.string().min(1, 'Search query is required'),
+      categoryId: z.number().optional(),
+      limit: z.number().min(1).max(50).default(20),
+    }))
+    .query(async ({ input }) => {
+      const { query, categoryId, limit } = input;
+      const searchTerm = `%${query.toLowerCase()}%`;
+      
+      // Base conditions - only show published posts for search
+      const conditions = [eq(posts.published, true)];
+      
+      // Create search conditions for title and content
+      const searchConditions = or(
+        ilike(posts.title, searchTerm),
+        ilike(posts.content, searchTerm)
+      );
+      
+      if (categoryId) {
+        // Search with category filter
+        const searchResults = await db
+          .select({
+            id: posts.id,
+            title: posts.title,
+            content: posts.content,
+            slug: posts.slug,
+            published: posts.published,
+            authorId: posts.authorId,
+            createdAt: posts.createdAt,
+            updatedAt: posts.updatedAt,
+            // Add search relevance score
+            relevanceScore: sql<number>`
+              CASE 
+                WHEN LOWER(${posts.title}) LIKE ${searchTerm} THEN 2
+                WHEN LOWER(${posts.content}) LIKE ${searchTerm} THEN 1
+                ELSE 0
+              END
+            `.as('relevance_score')
+          })
+          .from(posts)
+          .innerJoin(postCategories, eq(posts.id, postCategories.postId))
+          .where(and(
+            eq(postCategories.categoryId, categoryId),
+            ...conditions,
+            searchConditions
+          ))
+          .orderBy(
+            sql`relevance_score DESC`,
+            desc(posts.createdAt)
+          )
+          .limit(limit);
+          
+        return searchResults;
+      } else {
+        // Search without category filter
+        const searchResults = await db
+          .select({
+            id: posts.id,
+            title: posts.title,
+            content: posts.content,
+            slug: posts.slug,
+            published: posts.published,
+            authorId: posts.authorId,
+            createdAt: posts.createdAt,
+            updatedAt: posts.updatedAt,
+            // Add search relevance score
+            relevanceScore: sql<number>`
+              CASE 
+                WHEN LOWER(${posts.title}) LIKE ${searchTerm} THEN 2
+                WHEN LOWER(${posts.content}) LIKE ${searchTerm} THEN 1
+                ELSE 0
+              END
+            `.as('relevance_score')
+          })
+          .from(posts)
+          .where(and(
+            ...conditions,
+            searchConditions
+          ))
+          .orderBy(
+            sql`relevance_score DESC`,
+            desc(posts.createdAt)
+          )
+          .limit(limit);
+          
+        return searchResults;
+      }
     }),
 });

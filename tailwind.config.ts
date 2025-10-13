@@ -52,9 +52,11 @@ const config: Config = {
       animation: {
         "spin-slow": "spin 3s linear infinite",
         "float": "float 6s ease-in-out infinite",
+        "float-delayed": "float 6s ease-in-out infinite 3s",
         "shimmer": "shimmer 2s linear infinite",
         "fade-in": "fade-in 1s ease-out",
         "fade-in-up": "fade-in-up 1s ease-out 0.2s both",
+        "fade-in-up-delayed": "fade-in-up 1s ease-out 0.4s both",
       },
       keyframes: {
         float: {
