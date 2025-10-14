@@ -261,30 +261,30 @@ export default function CategoriesPage() {
                     </form>
                   ) : (
                     // Display Mode
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-3 sm:space-y-0">
+                      <div className="flex-1 min-w-0">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
                           {category.name}
                         </h3>
                         {category.description && (
-                          <p className="text-gray-600 dark:text-gray-400 mb-2">{category.description}</p>
+                          <p className="text-gray-600 dark:text-gray-400 mb-2 text-sm sm:text-base">{category.description}</p>
                         )}
                         <div className="text-sm text-gray-500 dark:text-gray-400">
-                          <span className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded">
+                          <span className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs">
                             /{category.slug}
                           </span>
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 sm:ml-4 flex-shrink-0">
                         <button
                           onClick={() => handleEdit(category)}
-                          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+                          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDelete(category.id, category.name)}
-                          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium"
+                          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium text-sm bg-red-50 dark:bg-red-900/20 px-3 py-1 rounded"
                           disabled={deleteCategory.isPending}
                         >
                           Delete

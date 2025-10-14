@@ -1,477 +1,842 @@
-# Full-Stack Blogging Platform
+<div align="center">
 
-A modern, feature-rich blogging platform built with Next.js 15, TypeScript, tRPC, PostgreSQL, and Drizzle ORM. Features complete user authentication, dark mode, search functionality, and comprehensive blog management.
+# 🚀 Full-Stack Blogging Platform
 
-## 🚀 Live Demo
+### _A Modern, Type-Safe Blogging Experience_
 
-**[View Live Deployment →](https://full-stack-blogging-platform-assess.vercel.app/)**
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![tRPC](https://img.shields.io/badge/tRPC-10.0-2596BE?style=for-the-badge&logo=trpc&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+[![Deployment Status](https://img.shields.io/badge/Deployed-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://full-stack-blogging-platform-assess.vercel.app/)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
+
+**[🌐 Live Demo](https://full-stack-blogging-platform-assess.vercel.app/)** • 
+**[📖 Documentation](#-quick-start)** • 
+**[🐛 Report Bug](https://github.com/Rahulhanje/Full-Stack-Blogging-Platform-Assessment/issues)** • 
+**[✨ Request Feature](https://github.com/Rahulhanje/Full-Stack-Blogging-Platform-Assessment/issues)**
+
+---
+
+*A feature-rich blogging platform built with Next.js 15, TypeScript, tRPC, PostgreSQL, and Drizzle ORM. Features complete user authentication, dark mode, search functionality, and comprehensive blog management.*
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [✨ Features](#-features-implemented)
+- [🛠 Tech Stack](#-tech-stack)
+- [📁 Project Structure](#-project-structure)
+- [⚡ Quick Start](#-quick-start)
+- [🎯 Usage Guide](#-usage-guide)
+- [🏗 tRPC Architecture](#-trpc-router-structure)
+- [🚀 Deployment](#-deployment)
+- [🛠 Development Decisions](#-development-decisions--trade-offs)
+- [⏱ Time Investment](#-time-investment)
+- [🚧 Future Enhancements](#-future-enhancements)
+- [🤝 Contributing](#-contributing)
+
+---
 
 ## ✨ Features Implemented
 
-### ✅ Priority 1 (Core Requirements)
-- [x] **Blog post CRUD operations** (create, read, update, delete)
-- [x] **Category CRUD operations** with full management interface
-- [x] **Multi-category assignment** to posts with intuitive selection
-- [x] **Blog listing page** with pagination and filtering
-- [x] **Individual post view** with markdown rendering
-- [x] **Category filtering** on listing page with dynamic counts
-- [x] **Responsive navigation** with mobile hamburger menu
-- [x] **Professional UI/UX** with modern design patterns
+<table>
+<tr>
+<td width="50%">
 
-### ✅ Priority 2 (Enhanced Features)
-- [x] **User Authentication System** (sign up, sign in, logout)
-- [x] **Protected Routes** for dashboard and post management
-- [x] **Search Functionality** across posts with real-time results
-- [x] **Dark Mode Support** with system preference detection
-- [x] **Markdown Editor** with live preview
-- [x] **SEO Optimization** with meta tags and Open Graph
-- [x] **Loading States** and error handling throughout
-- [x] **Toast Notifications** for user feedback
+### 🎯 Priority 1: Core Features
 
-### ✅ Priority 3 (Advanced Features)
-- [x] **Author-based Content** (users only see/edit their own posts)
-- [x] **Draft vs Published** post status management
-- [x] **URL Slug Generation** for SEO-friendly URLs
-- [x] **Responsive Design** optimized for all devices
-- [x] **Type-safe APIs** with full TypeScript integration
-- [x] **Real-time Validation** with Zod schemas
-- [x] **Performance Optimization** with React Query caching
+✅ **Blog post CRUD operations**  
+✅ **Category CRUD operations**  
+✅ **Multi-category assignment**  
+✅ **Blog listing with pagination**  
+✅ **Individual post view**  
+✅ **Category filtering**  
+✅ **Responsive navigation**  
+✅ **Professional UI/UX**  
 
-### 🔧 Technical Features
-- [x] **Database Schema** with relations and constraints
-- [x] **tRPC Integration** for end-to-end type safety
-- [x] **React Query** for efficient data fetching and caching
-- [x] **Markdown Support** with syntax highlighting
-- [x] **Form Validation** with real-time feedback
-- [x] **Error Boundaries** and graceful error handling
-- [x] **Mobile-first Design** with Tailwind CSS
-- [x] **Authentication Persistence** with secure session management
+</td>
+<td width="50%">
+
+### ⚡ Priority 2: Enhanced Features
+
+✅ **User Authentication System**  
+✅ **Protected Routes**  
+✅ **Search Functionality**  
+✅ **Dark Mode Support**  
+✅ **Markdown Editor**  
+✅ **SEO Optimization**  
+✅ **Loading States**  
+✅ **Toast Notifications**  
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🔥 Priority 3: Advanced Features
+
+✅ **Author-based Content**  
+✅ **Draft vs Published status**  
+✅ **URL Slug Generation**  
+✅ **Responsive Design**  
+✅ **Type-safe APIs**  
+✅ **Real-time Validation**  
+✅ **Performance Optimization**  
+
+</td>
+<td width="50%">
+
+### 🔧 Technical Excellence
+
+✅ **Database Schema with relations**  
+✅ **tRPC Integration**  
+✅ **React Query caching**  
+✅ **Markdown Support**  
+✅ **Form Validation**  
+✅ **Error Boundaries**  
+✅ **Mobile-first Design**  
+✅ **Authentication Persistence**  
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 🛠 Tech Stack
 
-### Frontend
-- **Next.js 15** - App Router with React 19 Server Components
-- **TypeScript** - Full type safety throughout the application
-- **Tailwind CSS** - Utility-first CSS framework with dark mode
-- **React Markdown** - Markdown rendering with syntax highlighting
-- **React Hook Form** - Performant forms with validation
+<div align="center">
 
-### Backend & API
-- **tRPC** - End-to-end typesafe APIs without code generation
-- **Next.js API Routes** - Serverless API endpoints
-- **Zod** - Runtime validation and TypeScript schema inference
+| Layer | Technologies |
+|:-----:|:------------|
+| **🎨 Frontend** | Next.js 15 • TypeScript • Tailwind CSS • React Markdown • React Hook Form |
+| **⚙️ Backend** | tRPC • Next.js API Routes • Zod Validation |
+| **💾 Database** | PostgreSQL • Drizzle ORM • Schema Migrations |
+| **📊 State** | TanStack Query (React Query) • DevTools |
+| **🔐 Security** | Custom Auth • Session Management • Protected Routes |
+| **🚀 DevOps** | Vercel • ESLint • Git |
 
-### Database & ORM
-- **PostgreSQL** - Robust relational database
-- **Drizzle ORM** - Modern TypeScript ORM with excellent DX
-- **Database Migrations** - Version-controlled schema management
+</div>
 
-### Data Fetching & State
-- **TanStack Query (React Query)** - Server state management via tRPC
-- **React Query DevTools** - Development debugging tools
+### 🎨 Frontend Excellence
 
-### Authentication & Security
-- **Custom Auth System** - Secure user registration and login
-- **Session Management** - Persistent authentication state
-- **Protected Routes** - Server-side and client-side protection
+```typescript
+🖥️  Next.js 15         → App Router with React 19 Server Components
+📘  TypeScript         → Full type safety throughout the application
+🎨  Tailwind CSS       → Utility-first CSS with dark mode support
+📝  React Markdown     → Beautiful markdown rendering with syntax highlighting
+📋  React Hook Form    → Performant forms with seamless validation
+```
 
-### Development & Deployment
-- **ESLint & TypeScript** - Code quality and type checking
-- **Vercel** - Seamless deployment with automatic previews
-- **Git** - Version control with meaningful commit history
+### ⚙️ Backend & API Layer
+
+```typescript
+🔄  tRPC               → End-to-end typesafe APIs without code generation
+🌐  Next.js Routes     → Serverless API endpoints with optimal performance
+✅  Zod                → Runtime validation and schema inference
+```
+
+### 💾 Database & ORM
+
+```sql
+🐘  PostgreSQL         → Robust relational database with ACID compliance
+🔧  Drizzle ORM        → Modern TypeScript ORM with excellent DX
+📊  Migrations         → Version-controlled schema management
+```
+
+### 🔐 Authentication & Security
+
+```typescript
+🔒  Custom Auth        → Secure user registration and login system
+🎫  Session Mgmt       → Persistent authentication state across sessions
+🛡️  Protected Routes   → Server-side and client-side route protection
+```
+
+---
 
 ## 📁 Project Structure
 
 ```
-blog/
-├── app/                          # Next.js 15 App Router
-│   ├── api/trpc/[trpc]/         # tRPC API endpoint
-│   ├── auth/                    # Authentication pages
-│   │   ├── signin/              # User login page
-│   │   └── signup/              # User registration page
-│   ├── blog/                    # Blog listing and individual posts
-│   │   ├── [slug]/              # Dynamic post pages
-│   │   └── page.tsx             # Blog listing with search
-│   ├── categories/              # Category management interface
-│   ├── dashboard/               # Protected post management
-│   │   ├── edit/[id]/           # Edit existing posts
-│   │   ├── new/                 # Create new posts
-│   │   └── page.tsx             # Dashboard overview
-│   ├── globals.css              # Global styles and Tailwind
-│   ├── layout.tsx               # Root layout with providers
-│   └── page.tsx                 # Landing/home page
-├── components/                   # Reusable React components
-│   ├── DarkModeToggle.tsx       # Theme switching component
-│   ├── ErrorState.tsx           # Error handling UI
-│   ├── Footer.tsx               # Site footer
-│   ├── LoadingSpinner.tsx       # Loading state components
-│   ├── Navbar.tsx               # Navigation with auth
-│   └── SearchBar.tsx            # Search functionality
-├── lib/                         # Core utilities and configuration
-│   ├── api/                     # tRPC router definitions
-│   │   ├── categories.ts        # Category CRUD operations
-│   │   ├── posts.ts             # Post CRUD operations
-│   │   └── root.ts              # Main tRPC router
-│   ├── db.ts                    # Database connection setup
-│   ├── providers.tsx            # tRPC and React Query providers
-│   ├── schema.ts                # Database schema with Drizzle
-│   ├── trpc.ts                  # tRPC client configuration
-│   ├── useAuth.ts               # Authentication hook
-│   └── utils.ts                 # Utility functions
-├── scripts/
-│   └── seed.ts                  # Database seeding script
-├── types/
-│   └── css.d.ts                 # TypeScript declarations
-├── drizzle.config.ts            # Drizzle ORM configuration
-├── next.config.ts               # Next.js configuration
-├── tailwind.config.js           # Tailwind CSS configuration
-└── tsconfig.json                # TypeScript configuration
+📦 Full-Stack-Blogging-Platform
+├── 📂 app/                           # Next.js 15 App Router
+│   ├── 📂 api/trpc/[trpc]/          # 🔄 tRPC API endpoint
+│   ├── 📂 auth/                     # 🔐 Authentication pages
+│   │   ├── 📄 signin/               # User login interface
+│   │   └── 📄 signup/               # User registration interface
+│   ├── 📂 blog/                     # 📝 Blog listing and posts
+│   │   ├── 📂 [slug]/               # Dynamic post pages
+│   │   └── 📄 page.tsx              # Blog listing with search
+│   ├── 📂 categories/               # 🏷️ Category management
+│   ├── 📂 dashboard/                # 🎛️ Protected post management
+│   │   ├── 📂 edit/[id]/            # Edit existing posts
+│   │   ├── 📂 new/                  # Create new posts
+│   │   └── 📄 page.tsx              # Dashboard overview
+│   ├── 🎨 globals.css               # Global styles
+│   ├── 📄 layout.tsx                # Root layout with providers
+│   └── 📄 page.tsx                  # Landing/home page
+├── 📂 components/                    # 🧩 Reusable React components
+│   ├── 🌓 DarkModeToggle.tsx        # Theme switching
+│   ├── ⚠️ ErrorState.tsx            # Error handling UI
+│   ├── 📌 Footer.tsx                # Site footer
+│   ├── ⏳ LoadingSpinner.tsx        # Loading states
+│   ├── 🧭 Navbar.tsx                # Navigation with auth
+│   └── 🔍 SearchBar.tsx             # Search functionality
+├── 📂 lib/                          # 🔧 Core utilities
+│   ├── 📂 api/                      # tRPC router definitions
+│   │   ├── 📄 categories.ts         # Category CRUD
+│   │   ├── 📄 posts.ts              # Post CRUD
+│   │   └── 📄 root.ts               # Main router
+│   ├── 💾 db.ts                     # Database connection
+│   ├── 🔄 providers.tsx             # App providers
+│   ├── 📊 schema.ts                 # Database schema
+│   ├── 🔌 trpc.ts                   # tRPC client config
+│   ├── 🔐 useAuth.ts                # Auth hook
+│   └── 🛠️ utils.ts                  # Utilities
+├── 📂 scripts/
+│   └── 🌱 seed.ts                   # Database seeding
+└── ⚙️ Configuration files            # TypeScript, Next.js, Tailwind, etc.
 ```
+
+---
 
 ## ⚡ Quick Start
 
-### Prerequisites
-- **Node.js 18+** - [Download here](https://nodejs.org/)
-- **PostgreSQL Database** - Local installation or cloud service (Neon, Supabase, etc.)
-- **Git** - For cloning the repository
+> **Prerequisites**: Node.js 18+, PostgreSQL, Git
 
-### 1. Clone and Install
+### 🚀 Installation in 3 Steps
+
+<table>
+<tr>
+<td width="33%">
+
+#### 1️⃣ Clone & Install
+
 ```bash
-# Clone the repository
 git clone https://github.com/Rahulhanje/Full-Stack-Blogging-Platform-Assessment.git
+
 cd Full-Stack-Blogging-Platform-Assessment
 
-# Install dependencies
 npm install
 ```
 
-### 2. Environment Configuration
-Create a `.env.local` file in the root directory:
+</td>
+<td width="33%">
+
+#### 2️⃣ Configure Environment
+
+Create `.env.local`:
 
 ```env
-# Database Configuration
-DATABASE_URL="postgresql://username:password@localhost:5432/blog_db"
-
-# For Neon Database (recommended for production)
-DATABASE_URL="postgresql://username:password@ep-xxx.us-east-1.aws.neon.tech/neondb?sslmode=require"
-
-# For Supabase
-DATABASE_URL="postgresql://postgres:password@db.xxx.supabase.co:5432/postgres"
-
-#JWT Secret
-JWT_SECRET="your_jwt_key"
-
+DATABASE_URL="postgresql://..."
+JWT_SECRET="your_secret"
 NEXTAUTH_URL="http://localhost:3000"
-# Optional: Custom port (default is 3000)
 PORT=3000
 ```
 
-### 3. Database Setup
+</td>
+<td width="33%">
 
-#### Option A: Local PostgreSQL
+#### 3️⃣ Launch
+
 ```bash
-# Create a new database
-createdb blog_db
-
-# The schema will be automatically created when you start the app
-```
-
-#### Option B: Cloud Database (Recommended)
-1. **Neon (Free tier available)**:
-   - Go to [neon.tech](https://neon.tech)
-   - Create a new project
-   - Copy the connection string to your `.env.local`
-
-2. **Supabase (Free tier available)**:
-   - Go to [supabase.com](https://supabase.com)
-   - Create a new project
-   - Get the database URL from Settings → Database
-
-### 4. Run the Application
-```bash
-# Start the development server
+# Development mode
 npm run dev
 
-# Build for production
+# Production build
 npm run build
-
-# Start production server
 npm start
 ```
 
-### 5. Access the Application
-- **Local Development**: [http://localhost:3000](http://localhost:3000)
-- **Production**: [Preview](https://full-stack-blogging-platform-assess.vercel.app/)
+</td>
+</tr>
+</table>
+
+### 🗄️ Database Setup Options
+
+<table>
+<tr>
+<td width="50%">
+
+#### 🏠 Option A: Local PostgreSQL
+
+```bash
+# Create database
+createdb blog_db
+
+# Schema auto-created on startup
+npm run dev
+```
+
+</td>
+<td width="50%">
+
+#### ☁️ Option B: Cloud Database (Recommended)
+
+**[Neon](https://neon.tech)** or **[Supabase](https://supabase.com)**
+
+1. Create new project
+2. Copy connection string
+3. Add to `.env.local`
+4. Deploy! 🎉
+
+</td>
+</tr>
+</table>
+
+### 🎯 Access Points
+
+| Environment | URL | Status |
+|:------------|:----|:------:|
+| **🏠 Local Development** | http://localhost:3000 | ✅ Ready |
+| **🌐 Production** | [Live Demo →](https://full-stack-blogging-platform-assess.vercel.app/) | 🚀 Deployed |
+
+---
 
 ## 🎯 Usage Guide
 
-### User Authentication
-1. **Sign Up**: Create a new account at `/auth/signup`
-2. **Sign In**: Access your account at `/auth/signin`
-3. **Dashboard Access**: Authenticated users can access `/dashboard`
+### 🔐 User Authentication Flow
 
-### Content Management
+```mermaid
+graph LR
+    A[👤 Visit Site] --> B{Authenticated?}
+    B -->|No| C[📝 Sign Up/Sign In]
+    B -->|Yes| D[🎛️ Access Dashboard]
+    C --> D
+    D --> E[✍️ Create Posts]
+    D --> F[🏷️ Manage Categories]
+    D --> G[📊 View Analytics]
+```
 
-#### Creating Blog Posts
-1. Navigate to **Dashboard** → **"Create New Post"**
-2. Enter post **title** and **content** (Markdown supported)
-3. Select one or more **categories** (optional)
-4. Choose to **Save as Draft** or **Publish** immediately
-5. **Preview** your content with the live markdown preview
+<table>
+<tr>
+<td width="33%">
 
-#### Managing Categories
-1. Go to the **Categories** page
-2. **Create** new categories with name and description
-3. **Edit** existing categories inline
-4. **Delete** categories (posts will retain category associations)
-5. View **post counts** for each category
+### 📝 Step 1: Sign Up
+Navigate to `/auth/signup`
+- Create account
+- Verify email
+- Set password
 
-#### Post Management Dashboard
-- **View all your posts** with status indicators (Draft/Published)
-- **Filter posts** by publication status
-- **Quick actions**: Edit, Delete, Toggle Publish Status
-- **Post statistics**: View creation dates and category assignments
+</td>
+<td width="33%">
 
-### Public Features
+### 🔓 Step 2: Sign In
+Access at `/auth/signin`
+- Enter credentials
+- Stay logged in
+- Secure session
 
-#### Blog Discovery
-- **Browse all published posts** on the main blog page
-- **Search posts** in real-time by title and content
-- **Filter by category** using the sidebar
-- **Read individual posts** with clean, readable formatting
+</td>
+<td width="33%">
 
-#### Navigation & User Experience
-- **Dark/Light mode toggle** with system preference detection
-- **Responsive design** that works on all devices
-- **Loading states** and **error handling** throughout
-- **SEO-optimized URLs** with automatic slug generation
+### 🎛️ Step 3: Dashboard
+Protected route `/dashboard`
+- Manage posts
+- Create content
+- View analytics
+
+</td>
+</tr>
+</table>
+
+---
+
+### ✍️ Content Management
+
+#### 📄 Creating Blog Posts
+
+> **Navigate**: Dashboard → "Create New Post"
+
+```markdown
+1. 📝 Enter post title and content (Markdown supported)
+2. 🏷️ Select one or more categories (optional)
+3. 💾 Save as Draft or 🚀 Publish immediately
+4. 👀 Preview with live markdown rendering
+5. ✅ Submit and share!
+```
+
+#### 🏷️ Managing Categories
+
+| Action | Description | Location |
+|:------:|:-----------|:---------|
+| ➕ **Create** | Add new categories with name & description | Categories Page |
+| ✏️ **Edit** | Modify category details inline | Categories Page |
+| 🗑️ **Delete** | Remove categories (posts retain associations) | Categories Page |
+| 📊 **Analytics** | View post counts per category | Categories Page |
+
+#### 🎛️ Post Management Dashboard
+
+<div align="center">
+
+| Feature | Description |
+|:-------:|:-----------|
+| 📋 **View All Posts** | Complete list with status indicators (Draft/Published) |
+| 🔍 **Filter Posts** | Filter by publication status and categories |
+| ⚡ **Quick Actions** | Edit, Delete, Toggle Publish Status |
+| 📊 **Statistics** | Creation dates, views, and category assignments |
+
+</div>
+
+---
+
+### 🌐 Public Features
+
+<table>
+<tr>
+<td width="50%">
+
+#### 📚 Blog Discovery
+
+🔍 **Search** - Real-time search by title/content  
+🏷️ **Filter** - Category-based filtering with sidebar  
+📖 **Browse** - All published posts with pagination  
+📝 **Read** - Clean, readable formatting with syntax highlighting  
+
+</td>
+<td width="50%">
+
+#### 🎨 User Experience
+
+🌓 **Dark/Light Mode** - System preference detection  
+📱 **Responsive** - Optimized for all devices  
+⏳ **Loading States** - Smooth transitions  
+🔗 **SEO URLs** - Automatic slug generation  
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 🏗 tRPC Router Structure
 
-The application uses tRPC for type-safe API routes with the following structure:
+> **End-to-end type safety without code generation**
 
-### Main Router (`lib/api/root.ts`)
+<div align="center">
+
+### 🎯 Main Router Architecture
+
 ```typescript
-export const appRouter = createTRPCRouter({
-  posts: postsRouter,
-  categories: categoriesRouter,
-})
+📦 appRouter
+├── 📝 postsRouter          // Blog post operations
+└── 🏷️ categoriesRouter     // Category management
 ```
 
-### Posts Router (`lib/api/posts.ts`)
+</div>
+
+---
+
+<table>
+<tr>
+<td width="50%">
+
+### 📝 Posts Router (`lib/api/posts.ts`)
+
 ```typescript
-postsRouter = {
-  // Public routes
-  getAll: publicProcedure      // Get all posts with filtering
-  getBySlug: publicProcedure   // Get single post by slug
-  
-  // Protected routes  
-  create: protectedProcedure   // Create new post
-  update: protectedProcedure   // Update existing post
-  delete: protectedProcedure   // Delete post
-  getById: protectedProcedure  // Get post by ID for editing
-}
+🌐 PUBLIC ROUTES
+├── getAll          // List all posts with filters
+└── getBySlug       // Get single post by slug
+
+🔒 PROTECTED ROUTES
+├── create          // Create new post
+├── update          // Update existing post
+├── delete          // Delete post
+└── getById         // Get post by ID for editing
 ```
 
-### Categories Router (`lib/api/categories.ts`)
+</td>
+<td width="50%">
+
+### 🏷️ Categories Router (`lib/api/categories.ts`)
+
 ```typescript
-categoriesRouter = {
-  // Public routes
-  getAll: publicProcedure      // Get all categories
-  getBySlug: publicProcedure   // Get category with posts
-  
-  // Admin routes
-  create: protectedProcedure   // Create new category
-  update: protectedProcedure   // Update category
-  delete: protectedProcedure   // Delete category
-}
+🌐 PUBLIC ROUTES
+├── getAll          // List all categories
+└── getBySlug       // Get category with posts
+
+🔒 ADMIN ROUTES
+├── create          // Create new category
+├── update          // Update category
+└── delete          // Delete category
 ```
 
-### Key Features:
-- **Type Safety**: Full TypeScript inference from server to client
-- **Input Validation**: Zod schemas for runtime validation
-- **Error Handling**: Structured error responses with proper HTTP codes
-- **Authentication**: Protected procedures with user context
-- **Optimistic Updates**: React Query integration for smooth UX
+</td>
+</tr>
+</table>
 
-### Data Flow:
-1. **Client** calls tRPC procedure
-2. **tRPC** validates input with Zod schemas
-3. **Router** processes request with type-safe database queries
-4. **Response** is automatically typed on the client
-5. **React Query** handles caching and background updates
+---
+
+### ⚡ Key Features
+
+<div align="center">
+
+| Feature | Description | Benefit |
+|:-------:|:-----------|:--------|
+| 🎯 **Type Safety** | Full TypeScript inference server→client | Zero runtime errors |
+| ✅ **Validation** | Zod schemas for runtime checks | Data integrity |
+| ⚠️ **Error Handling** | Structured responses with HTTP codes | Better debugging |
+| 🔐 **Authentication** | Protected procedures with user context | Secure operations |
+| ⚡ **Optimistic Updates** | React Query integration | Smooth UX |
+
+</div>
+
+### 🔄 Data Flow Pipeline
+
+```typescript
+1. 🖱️  Client → Calls tRPC procedure
+2. ✅  tRPC → Validates input with Zod schemas
+3. 🔧  Router → Processes with type-safe DB queries
+4. 📦  Response → Auto-typed on client
+5. 💾  React Query → Caches & background updates
+```
+
+---
 
 ## 🚀 Deployment
 
-### Vercel Deployment (Recommended)
+### 🌟 Vercel Deployment (Recommended)
 
-1. **Connect Repository**:
-   - Fork this repository to your GitHub account
-   - Connect your GitHub account to [Vercel](https://vercel.com)
-   - Import the project from your repository
+<table>
+<tr>
+<td width="25%">
 
-2. **Environment Variables**:
-   Add these in your Vercel dashboard under Settings → Environment Variables:
-   ```
-   DATABASE_URL=your_production_database_url
-   ```
+#### 1️⃣ Connect
+- Fork repository
+- Link GitHub
+- Import project
 
-3. **Database Setup**:
-   - Use [Neon](https://neon.tech) for a free PostgreSQL database
-   - Or [Supabase](https://supabase.com) for a free PostgreSQL database
-   - Copy the connection string to your Vercel environment variables
+</td>
+<td width="25%">
 
-4. **Deploy**:
-   - Vercel will automatically deploy on every push to main branch
-   - Your app will be available at `https://your-app.vercel.app`
-
-### Alternative Deployment Options
-
-#### Netlify
-```bash
-npm run build
-# Deploy the .next folder
+#### 2️⃣ Configure
+Add environment variables:
+```
+DATABASE_URL
+JWT_SECRET
 ```
 
-#### Railway
-- Connect your GitHub repository
-- Add DATABASE_URL environment variable
-- Deploy automatically
+</td>
+<td width="25%">
 
-#### Self-Hosted
-```bash
-# Build the application
-npm run build
+#### 3️⃣ Database
+- Setup [Neon](https://neon.tech)
+- Or [Supabase](https://supabase.com)
+- Copy connection string
 
-# Start production server
-npm start
-```
+</td>
+<td width="25%">
 
-### Environment Variables Reference
+#### 4️⃣ Deploy
+- Auto-deploy on push
+- Live at `your-app.vercel.app`
+- Done! 🎉
+
+</td>
+</tr>
+</table>
+
+---
+
+### 🔄 Alternative Deployment Options
+
+<div align="center">
+
+| Platform | Command | Features |
+|:--------:|:--------|:---------|
+| **☁️ Netlify** | `npm run build` | Deploy `.next` folder, edge functions |
+| **🚂 Railway** | Connect repo | Add `DATABASE_URL`, auto-deploy |
+| **🏠 Self-Hosted** | `npm run build && npm start` | Full control, custom domain |
+
+</div>
+
+### 🔑 Environment Variables Reference
 
 | Variable | Description | Required | Example |
-|----------|-------------|----------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | Yes | `postgresql://user:pass@host:5432/db` |
-| `PORT` | Server port (optional) | No | `3000` |
+|:--------:|:-----------|:--------:|:--------|
+| `DATABASE_URL` | PostgreSQL connection string | ✅ Yes | `postgresql://user:pass@host:5432/db` |
+| `JWT_SECRET` | Secret key for JWT tokens | ✅ Yes | `your_secure_random_string` |
+| `PORT` | Server port | ❌ No | `3000` |
+| `NEXTAUTH_URL` | Application URL | ✅ Yes | `https://your-app.vercel.app` |
 
-### Database Migration for Production
-
-The database schema is automatically created when the application starts. For production environments, ensure your database user has the necessary permissions to create tables.
+---
 
 ## 🛠 Development Decisions & Trade-offs
 
-### Architecture Choices
+<table>
+<tr>
+<td width="50%">
 
-#### **Next.js 15 App Router**
-- ✅ **Choice**: Used App Router over Pages Router
-- **Reasoning**: Better performance with Server Components, improved DX
-- **Trade-off**: Newer API with fewer community examples
+### 🏗️ Architecture Choices
 
-#### **tRPC over REST**
-- ✅ **Choice**: tRPC for type-safe APIs
-- **Reasoning**: End-to-end type safety, no code generation needed
-- **Trade-off**: Learning curve for developers unfamiliar with tRPC
+#### ⚡ Next.js 15 App Router
+✅ **Choice**: App Router over Pages Router  
+💡 **Reasoning**: Server Components, better performance  
+⚖️ **Trade-off**: Newer API, fewer examples  
 
-#### **Drizzle ORM over Prisma**
-- ✅ **Choice**: Drizzle for database operations
-- **Reasoning**: Better TypeScript integration, smaller bundle size
-- **Trade-off**: Less mature ecosystem than Prisma
+#### 🔄 tRPC over REST
+✅ **Choice**: tRPC for type-safe APIs  
+💡 **Reasoning**: End-to-end type safety  
+⚖️ **Trade-off**: Learning curve  
 
-#### **Custom Auth over NextAuth**
-- ✅ **Choice**: Custom authentication system
-- **Reasoning**: Full control over user flow, simpler setup for this use case
-- **Trade-off**: More implementation time, manual security considerations
+#### 💾 Drizzle ORM over Prisma
+✅ **Choice**: Drizzle for database  
+💡 **Reasoning**: Better TypeScript, smaller bundle  
+⚖️ **Trade-off**: Less mature ecosystem  
 
-### UI/UX Decisions
+</td>
+<td width="50%">
 
-#### **Markdown over Rich Text Editor**
-- ✅ **Choice**: Markdown with live preview
-- **Reasoning**: Faster development, better for developers, cleaner storage
-- **Trade-off**: Less user-friendly for non-technical users
+### 🎨 UI/UX Decisions
 
-#### **Dark Mode Implementation**
-- ✅ **Choice**: System preference detection with manual toggle
-- **Reasoning**: Modern user expectation, better accessibility
-- **Trade-off**: Additional complexity in styling and state management
+#### 📝 Markdown over Rich Text
+✅ **Choice**: Markdown with live preview  
+💡 **Reasoning**: Faster dev, cleaner storage  
+⚖️ **Trade-off**: Less user-friendly  
 
-#### **Mobile-First Design**
-- ✅ **Choice**: Responsive design with Tailwind CSS
-- **Reasoning**: Mobile traffic dominance, better user experience
-- **Trade-off**: More complex CSS class management
+#### 🌓 Dark Mode
+✅ **Choice**: System preference + manual toggle  
+💡 **Reasoning**: Modern expectation, accessibility  
+⚖️ **Trade-off**: Styling complexity  
 
-### Performance Optimizations
+#### 📱 Mobile-First Design
+✅ **Choice**: Responsive with Tailwind  
+💡 **Reasoning**: Mobile traffic dominance  
+⚖️ **Trade-off**: Complex CSS management  
 
-#### **React Query for Caching**
-- ✅ **Choice**: Aggressive caching with background updates
-- **Reasoning**: Better UX with instant page loads, reduced server load
-- **Trade-off**: More complex state management
+</td>
+</tr>
+</table>
 
-#### **Optimistic Updates**
-- ✅ **Choice**: Immediate UI updates before server confirmation
-- **Reasoning**: Perceived performance improvement
-- **Trade-off**: Error handling complexity
+---
 
-### Security Considerations
+### ⚡ Performance Optimizations
 
-#### **Input Validation**
-- ✅ **Implementation**: Zod schemas on both client and server
-- **Reasoning**: Prevent XSS, injection attacks, data corruption
-- **Coverage**: All form inputs, API routes, database operations
+<div align="center">
 
-#### **Authentication Security**
-- ✅ **Implementation**: Secure session management, protected routes
-- **Reasoning**: Protect user data and admin functionality
-- **Scope**: Server-side and client-side route protection
+| Optimization | Implementation | Benefit | Trade-off |
+|:------------:|:--------------|:--------|:----------|
+| **💾 Caching** | React Query aggressive caching | Instant page loads | Complex state management |
+| **⚡ Optimistic Updates** | Immediate UI updates | Better perceived performance | Error handling complexity |
+| **🔄 Background Sync** | Automatic data revalidation | Always fresh data | Increased API calls |
+
+</div>
+
+### 🔐 Security Considerations
+
+<table>
+<tr>
+<td width="50%">
+
+#### ✅ Input Validation
+- **Implementation**: Zod schemas (client + server)
+- **Protection**: XSS, injection, data corruption
+- **Coverage**: All forms, API routes, DB ops
+
+</td>
+<td width="50%">
+
+#### 🔒 Authentication Security
+- **Implementation**: Secure session management
+- **Protection**: User data and admin functions
+- **Scope**: Server + client-side protection
+
+</td>
+</tr>
+</table>
+
+---
 
 ## ⏱ Time Investment
 
-### Development Breakdown
-| Phase | Time Spent | Description |
-|-------|------------|-------------|
-| **Planning & Setup** | 2 hours | Project structure, dependencies, database schema |
-| **Database & tRPC** | 3 hours | Drizzle setup, tRPC routers, type definitions |
-| **Authentication System** | 4 hours | Sign up/in pages, protected routes, session management |
-| **Core UI Components** | 3 hours | Navbar, Footer, LoadingSpinner, ErrorState |
-| **Blog Functionality** | 4 hours | Post listing, individual post view, search |
-| **Dashboard & CRUD** | 5 hours | Post management, create/edit forms, category management |
-| **Dark Mode & Polish** | 3 hours | Theme system, responsive design, UX improvements |
-| **Testing & Debugging** | 2 hours | Bug fixes, error handling, optimization |
+<div align="center">
 
-**Total Development Time**: ~26 hours
+### 📊 Development Breakdown (26 Hours Total)
 
-### Key Milestones
-- **Hour 6**: Basic blog listing and post view working
-- **Hour 12**: Complete authentication and protected routes
-- **Hour 18**: Full CRUD operations and dashboard
-- **Hour 24**: Search, dark mode, and responsive design
-- **Hour 26**: Final polish and deployment ready
+```mermaid
+pie title Time Distribution
+    "Planning & Setup" : 2
+    "Database & tRPC" : 3
+    "Authentication" : 4
+    "UI Components" : 3
+    "Blog Features" : 4
+    "Dashboard & CRUD" : 5
+    "Dark Mode & Polish" : 3
+    "Testing & Debug" : 2
+```
+
+</div>
+
+| Phase | ⏱️ Time | 📝 Description |
+|:------|:-------:|:-------------|
+| 🎯 **Planning & Setup** | 2h | Project structure, dependencies, database schema |
+| 💾 **Database & tRPC** | 3h | Drizzle setup, tRPC routers, type definitions |
+| 🔐 **Authentication** | 4h | Sign up/in pages, protected routes, session management |
+| 🎨 **Core UI Components** | 3h | Navbar, Footer, LoadingSpinner, ErrorState |
+| 📝 **Blog Functionality** | 4h | Post listing, individual view, search feature |
+| 🎛️ **Dashboard & CRUD** | 5h | Post management, create/edit forms, categories |
+| 🌓 **Dark Mode & Polish** | 3h | Theme system, responsive design, UX improvements |
+| 🧪 **Testing & Debugging** | 2h | Bug fixes, error handling, performance optimization |
+
+### 🎯 Key Milestones
+
+<table>
+<tr>
+<td width="25%">
+
+**⏱️ Hour 6**
+✅ Blog listing  
+✅ Post view  
+✅ Basic routing  
+
+</td>
+<td width="25%">
+
+**⏱️ Hour 12**
+✅ Authentication  
+✅ Protected routes  
+✅ User sessions  
+
+</td>
+<td width="25%">
+
+**⏱️ Hour 18**
+✅ Full CRUD  
+✅ Dashboard  
+✅ Categories  
+
+</td>
+<td width="25%">
+
+**⏱️ Hour 26**
+✅ Search feature  
+✅ Dark mode  
+✅ Production ready  
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 🚧 Future Enhancements
 
-### Immediate Improvements (Priority 1)
-- [ ] **Image Upload**: Cloudinary or AWS S3 integration for post images
-- [ ] **Rich Text Editor**: Replace markdown with WYSIWYG editor
-- [ ] **Email Notifications**: Notify users of new posts in followed categories
-- [ ] **Post Analytics**: View count, read time estimation
+<table>
+<tr>
+<td width="33%">
 
-### Enhanced Features (Priority 2)
-- [ ] **Comment System**: User comments on blog posts
-- [ ] **Social Sharing**: Share posts on social media platforms
-- [ ] **RSS Feed**: Auto-generated RSS feed for blog posts
-- [ ] **Related Posts**: Algorithm to suggest related content
-- [ ] **Post Tags**: Additional tagging system beyond categories
+### 🎯 Priority 1: Immediate
 
-### Advanced Features (Priority 3)
-- [ ] **Multi-language Support**: i18n implementation
-- [ ] **Admin Dashboard**: User management, analytics, moderation
-- [ ] **API Rate Limiting**: Protect against abuse
-- [ ] **Advanced Search**: Full-text search with filters
-- [ ] **Newsletter System**: Email subscriptions and campaigns
+- [ ] 🖼️ **Image Upload**  
+  Cloudinary/S3 integration
+
+- [ ] 📝 **Rich Text Editor**  
+  WYSIWYG editor replacement
+
+- [ ] 📧 **Email Notifications**  
+  New post alerts
+
+- [ ] 📊 **Post Analytics**  
+  View count, read time
+
+</td>
+<td width="33%">
+
+### ⚡ Priority 2: Enhanced
+
+- [ ] 💬 **Comment System**  
+  User engagement
+
+- [ ] 🔗 **Social Sharing**  
+  Share on platforms
+
+- [ ] 📰 **RSS Feed**  
+  Auto-generated feed
+
+- [ ] 🔗 **Related Posts**  
+  Content suggestions
+
+- [ ] 🏷️ **Post Tags**  
+  Additional taxonomy
+
+</td>
+<td width="33%">
+
+### 🚀 Priority 3: Advanced
+
+- [ ] 🌍 **Multi-language**  
+  i18n implementation
+
+- [ ] 👑 **Admin Dashboard**  
+  User management
+
+- [ ] 🔒 **Rate Limiting**  
+  API protection
+
+- [ ] 🔍 **Advanced Search**  
+  Full-text search
+
+- [ ] 📬 **Newsletter**  
+  Email campaigns
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+<div align="center">
+
+### We love contributions! 💙
+
+</div>
+
+```bash
+1. 🍴 Fork the repository
+2. 🌿 Create feature branch       → git checkout -b feature/amazing-feature
+3. 💾 Commit your changes         → git commit -m 'Add amazing feature'
+4. 🚀 Push to the branch          → git push origin feature/amazing-feature
+5. 🎉 Open a Pull Request
+```
+
+<div align="center">
+
+### 📝 Contribution Guidelines
+
+| Type | Description | Label |
+|:----:|:-----------|:------|
+| 🐛 **Bug Fix** | Fix existing issues | `bug` |
+| ✨ **Feature** | Add new functionality | `enhancement` |
+| 📚 **Documentation** | Improve docs | `documentation` |
+| 🎨 **Style** | UI/UX improvements | `design` |
+| ⚡ **Performance** | Optimization | `performance` |
+
+---
+
+### 📞 Contact & Support
+
+**Found a bug?** [Open an issue](https://github.com/Rahulhanje/Full-Stack-Blogging-Platform-Assessment/issues)  
+**Have a question?** [Start a discussion](https://github.com/Rahulhanje/Full-Stack-Blogging-Platform-Assessment/discussions)  
+**Want to contribute?** Check our [Contributing Guide](CONTRIBUTING.md)
+
+---
+
+### ⭐ Show Your Support
+
+If you find this project helpful, please consider giving it a ⭐ on GitHub!
+
+[![GitHub stars](https://img.shields.io/github/stars/Rahulhanje/Full-Stack-Blogging-Platform-Assessment?style=social)](https://github.com/Rahulhanje/Full-Stack-Blogging-Platform-Assessment)
+[![GitHub forks](https://img.shields.io/github/forks/Rahulhanje/Full-Stack-Blogging-Platform-Assessment?style=social)](https://github.com/Rahulhanje/Full-Stack-Blogging-Platform-Assessment/fork)
+
+---
+
+<sub>Built with ❤️ by [Rahul Hanje](https://github.com/Rahulhanje) • © 2025</sub>
+
+</div>

@@ -169,7 +169,8 @@ export default function DashboardPage() {
         {/* Posts Table */}
         {filteredPosts.length > 0 ? (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50 overflow-hidden">
-            <div className="overflow-x-auto">
+            {/* Desktop Table */}
+            <div className="hidden lg:block overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-900">
                   <tr>
@@ -271,6 +272,71 @@ export default function DashboardPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Card Layout */}
+            <div className="lg:hidden divide-y divide-gray-200 dark:divide-gray-700">
+              {filteredPosts.map((post) => (
+                <div key={post.id} className="p-4 space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        <Link href={`/blog/${post.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400">
+                          {post.title}
+                        </Link>
+                      </h3>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+                        {post.content.length > 80 ? `${post.content.substring(0, 80)}...` : post.content}
+                      </p>
+                    </div>
+                    <span
+                      className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full flex-shrink-0 ${
+                        post.published
+                          ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                          : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                      }`}
+                    >
+                      {post.published ? 'Published' : 'Draft'}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                    <div className="space-y-1">
+                      <div>Created: {formatDate(post.createdAt)}</div>
+                      <div>Updated: {formatDate(post.updatedAt)}</div>
+                    </div>
+                  </div>
+                  
+                  {(post.authorId === user.id || user.role === 'admin') && (
+                    <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+                      <Link
+                        href={`/dashboard/edit/${post.id}`}
+                        className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => handleTogglePublish(post.id, post.published)}
+                        className={`text-xs px-2 py-1 rounded ${
+                          post.published
+                            ? 'text-yellow-600 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-300 bg-yellow-50 dark:bg-yellow-900/20'
+                            : 'text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 bg-green-50 dark:bg-green-900/20'
+                        }`}
+                        disabled={togglePublish.isPending}
+                      >
+                        {post.published ? 'Unpublish' : 'Publish'}
+                      </button>
+                      <button
+                        onClick={() => handleDelete(post.id, post.title)}
+                        className="text-xs text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded"
+                        disabled={deletePost.isPending}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         ) : (

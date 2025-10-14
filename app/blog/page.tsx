@@ -94,10 +94,10 @@ function BlogPageContent() {
 
         {/* Category Filter */}
         <div className="mb-8">
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-wrap gap-2 justify-center px-4 sm:px-0">
             <button
               onClick={() => setSelectedCategory(undefined)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors ${
                 selectedCategory === undefined
                   ? 'bg-blue-600 text-white'
                   : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
@@ -110,7 +110,7 @@ function BlogPageContent() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors ${
                   selectedCategory === category.id
                     ? 'bg-blue-600 text-white'
                     : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
@@ -123,19 +123,19 @@ function BlogPageContent() {
         </div>
 
         {/* Posts Grid */}
-        <div className="grid gap-8">
+        <div className="grid gap-6 sm:gap-8">
           {posts && posts.length > 0 ? (
             posts.map((post) => (
               <article key={post.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-700/50 overflow-hidden hover:shadow-lg dark:hover:shadow-gray-700/70 transition-shadow">
-                <div className="p-6">
-                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-2">
+                <div className="p-4 sm:p-6">
+                  <div className="flex items-center justify-between text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2">
                     <time dateTime={new Date(post.createdAt).toISOString()}>
                       {formatDate(post.createdAt)}
                     </time>
                     <span>{calculateReadingTime(post.content)} min read</span>
                   </div>
                   
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 hover:text-blue-600 dark:hover:text-blue-400">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 hover:text-blue-600 dark:hover:text-blue-400 leading-tight">
                     <Link href={`/blog/${post.slug}`}>
                       {post.title}
                     </Link>
@@ -144,22 +144,22 @@ function BlogPageContent() {
                   <div className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 prose prose-sm max-w-none">
                     <ReactMarkdown
                       components={{
-                        p: ({ children }) => <p className="text-gray-600 dark:text-gray-300">{children}</p>,
-                        h1: ({ children }) => <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{children}</h3>,
-                        h2: ({ children }) => <h4 className="text-base font-semibold text-gray-800 dark:text-gray-200">{children}</h4>,
+                        p: ({ children }) => <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">{children}</p>,
+                        h1: ({ children }) => <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200">{children}</h3>,
+                        h2: ({ children }) => <h4 className="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200">{children}</h4>,
                         h3: ({ children }) => <h5 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{children}</h5>,
-                        code: ({ children }) => <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded text-sm dark:text-gray-200">{children}</code>,
+                        code: ({ children }) => <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded text-xs sm:text-sm dark:text-gray-200">{children}</code>,
                         strong: ({ children }) => <strong className="font-semibold text-gray-800 dark:text-gray-200">{children}</strong>,
                         em: ({ children }) => <em className="italic">{children}</em>,
                       }}
                     >
-                      {post.content.length > 200 ? `${post.content.substring(0, 200)}...` : post.content}
+                      {post.content.length > 150 ? `${post.content.substring(0, 150)}...` : post.content}
                     </ReactMarkdown>
                   </div>
-                    <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between">
                     <Link 
                       href={`/blog/${post.slug}`}
-                      className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm sm:text-base"
                     >
                       Read more →
                     </Link>

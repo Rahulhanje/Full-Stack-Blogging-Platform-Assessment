@@ -138,44 +138,44 @@ export default function NewPostPage() {
           )}
 
         
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50 p-6">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50 p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
               <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Content (Markdown supported)
               </label>
               <button
                 type="button"
                 onClick={() => setPreview(!preview)}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 self-start sm:self-auto"
               >
                 {preview ? 'Edit' : 'Preview'}
               </button>
             </div>
 
             {preview ? (
-              <div className="prose prose-lg max-w-none p-4 border border-gray-200 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 min-h-96">
+              <div className="prose prose-sm sm:prose-lg max-w-none p-3 sm:p-4 border border-gray-200 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 min-h-64 sm:min-h-96 overflow-auto">
                 {content ? (
                   <ReactMarkdown
                     components={{
-                      h1: ({ children }) => <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">{children}</h1>,
-                      h2: ({ children }) => <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">{children}</h2>,
-                      h3: ({ children }) => <h3 className="text-xl font-medium text-gray-800 dark:text-gray-200 mt-4 mb-2">{children}</h3>,
-                      p: ({ children }) => <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{children}</p>,
-                      ul: ({ children }) => <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>,
-                      ol: ({ children }) => <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>,
-                      li: ({ children }) => <li className="text-gray-700 dark:text-gray-300">{children}</li>,
-                      blockquote: ({ children }) => <blockquote className="border-l-4 border-blue-500 dark:border-blue-400 pl-4 italic text-gray-600 dark:text-gray-400 mb-4">{children}</blockquote>,
+                      h1: ({ children }) => <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-6 sm:mt-8 mb-3 sm:mb-4">{children}</h1>,
+                      h2: ({ children }) => <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mt-4 sm:mt-6 mb-2 sm:mb-3">{children}</h2>,
+                      h3: ({ children }) => <h3 className="text-lg sm:text-xl font-medium text-gray-800 dark:text-gray-200 mt-3 sm:mt-4 mb-2">{children}</h3>,
+                      p: ({ children }) => <p className="text-gray-700 dark:text-gray-300 mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">{children}</p>,
+                      ul: ({ children }) => <ul className="list-disc list-inside mb-3 sm:mb-4 space-y-1">{children}</ul>,
+                      ol: ({ children }) => <ol className="list-decimal list-inside mb-3 sm:mb-4 space-y-1">{children}</ol>,
+                      li: ({ children }) => <li className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">{children}</li>,
+                      blockquote: ({ children }) => <blockquote className="border-l-4 border-blue-500 dark:border-blue-400 pl-3 sm:pl-4 italic text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 text-sm sm:text-base">{children}</blockquote>,
                       code: ({ children, className }) => {
                         const isInline = !className;
                         return isInline ? (
-                          <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-sm font-mono text-gray-800 dark:text-gray-200">{children}</code>
+                          <code className="bg-gray-200 dark:bg-gray-700 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs sm:text-sm font-mono text-gray-800 dark:text-gray-200">{children}</code>
                         ) : (
-                          <code className={`${className} block bg-gray-900 dark:bg-gray-950 text-gray-100 p-4 rounded-lg overflow-x-auto`}>
+                          <code className={`${className} block bg-gray-900 dark:bg-gray-950 text-gray-100 p-2 sm:p-4 rounded-lg overflow-x-auto text-xs sm:text-sm`}>
                             {children}
                           </code>
                         );
                       },
-                      pre: ({ children }) => <pre className="mb-4">{children}</pre>,
+                      pre: ({ children }) => <pre className="mb-3 sm:mb-4">{children}</pre>,
                       a: ({ children, href }) => <a href={href} className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">{children}</a>,
                       strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
                       em: ({ children }) => <em className="italic">{children}</em>,
@@ -184,7 +184,7 @@ export default function NewPostPage() {
                     {content}
                   </ReactMarkdown>
                 ) : (
-                  <div className="text-gray-500 dark:text-gray-400 italic">Nothing to preview yet...</div>
+                  <div className="text-gray-500 dark:text-gray-400 italic text-sm">Nothing to preview yet...</div>
                 )}
               </div>
             ) : (
@@ -192,8 +192,8 @@ export default function NewPostPage() {
                 id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                rows={20}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+                rows={15}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical text-sm sm:text-base"
                 placeholder="Write your post content in Markdown...
 
 # Example Heading
