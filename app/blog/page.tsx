@@ -6,11 +6,11 @@ import { trpc } from '../../lib/providers';
 import { LoadingState } from '../../components/LoadingSpinner';
 import { ErrorState } from '../../components/ErrorState';
 import { formatDate, calculateReadingTime } from '../../lib/utils';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import SearchBar from '../../components/SearchBar';
 
-export default function BlogPage() {
+function BlogPageContent() {
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q');
@@ -210,5 +210,19 @@ function PostCategories({ postId }: { postId: number }) {
         </span>
       )}
     </div>
+  );
+}
+
+export default function BlogPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+          <LoadingState message="Loading blog posts..." />
+        </div>
+      </div>
+    }>
+      <BlogPageContent />
+    </Suspense>
   );
 }
