@@ -156,15 +156,13 @@ function BlogPageContent() {
                       {post.content.length > 200 ? `${post.content.substring(0, 200)}...` : post.content}
                     </ReactMarkdown>
                   </div>
-                  
-                  <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between">
                     <Link 
                       href={`/blog/${post.slug}`}
                       className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
                     >
                       Read more →
                     </Link>
-                    
                     <PostCategories postId={post.id} />
                   </div>
                 </div>
