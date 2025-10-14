@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased min-h-screen bg-background text-foreground">
         <TRPCProvider>
-          <div className="min-h-screen bg-gray-50 flex flex-col">
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col transition-colors duration-200">
             <Navbar />
             <main className="flex-1">
               {children}

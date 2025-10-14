@@ -67,4 +67,17 @@
   .mt-navbar {
     margin-top: 4rem;
   }
+
+  /* Glass card effect for both light and dark modes */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .dark .glass-card {
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
