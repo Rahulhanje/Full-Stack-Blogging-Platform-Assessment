@@ -67,7 +67,7 @@ export default function EditPostPage() {
   // Show loading while checking authentication
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24 dark:bg-gray-900 min-h-screen">
         <LoadingState message="Loading..." />
       </div>
     );
@@ -80,7 +80,7 @@ export default function EditPostPage() {
 
   if (postLoading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24 dark:bg-gray-900 min-h-screen">
         <LoadingState message="Loading post..." />
       </div>
     );
@@ -88,7 +88,7 @@ export default function EditPostPage() {
 
   if (postError || !post) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24 dark:bg-gray-900 min-h-screen">
         <ErrorState 
           title="Post not found"
           message="The post you're trying to edit doesn't exist or has been deleted." 
@@ -100,7 +100,7 @@ export default function EditPostPage() {
   // Authorization check - show error if user doesn't own the post
   if (!isAuthorized) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+      <div className="max-w-4xl mx-auto px-4 py-8 pt-24 dark:bg-gray-900 min-h-screen">
         <ErrorState 
           title="Access Denied"
           message="You don't have permission to edit this post. You can only edit posts that you created." 
@@ -139,17 +139,17 @@ export default function EditPostPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
+    <div className="max-w-4xl mx-auto px-4 py-8 pt-24 dark:bg-gray-900 min-h-screen">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Edit Post</h1>
-        <p className="text-gray-600">Update your blog post</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Edit Post</h1>
+        <p className="text-gray-600 dark:text-gray-400">Update your blog post</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50 p-6">
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Title
             </label>
             <input
@@ -157,7 +157,7 @@ export default function EditPostPage() {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Enter your post title..."
               required
             />
@@ -165,8 +165,8 @@ export default function EditPostPage() {
 
           {/* Categories */}
           {categories && categories.length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50 p-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Categories
               </label>
               <div className="flex flex-wrap gap-2">
@@ -178,7 +178,7 @@ export default function EditPostPage() {
                     className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                       selectedCategories.includes(category.id)
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {category.name}
@@ -189,45 +189,45 @@ export default function EditPostPage() {
           )}
 
           {/* Content Editor */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50 p-6">
             <div className="flex items-center justify-between mb-4">
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Content (Markdown supported)
               </label>
               <button
                 type="button"
                 onClick={() => setPreview(!preview)}
-                className="text-sm text-blue-600 hover:text-blue-800"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
                 {preview ? 'Edit' : 'Preview'}
               </button>
             </div>
 
             {preview ? (
-              <div className="prose prose-lg max-w-none p-4 border border-gray-200 rounded-md bg-gray-50 min-h-96">
+              <div className="prose prose-lg max-w-none p-4 border border-gray-200 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-900 min-h-96">
                 {content ? (
                   <ReactMarkdown
                     components={{
-                      h1: ({ children }) => <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">{children}</h1>,
-                      h2: ({ children }) => <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-3">{children}</h2>,
-                      h3: ({ children }) => <h3 className="text-xl font-medium text-gray-800 mt-4 mb-2">{children}</h3>,
-                      p: ({ children }) => <p className="text-gray-700 mb-4 leading-relaxed">{children}</p>,
+                      h1: ({ children }) => <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">{children}</h1>,
+                      h2: ({ children }) => <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">{children}</h2>,
+                      h3: ({ children }) => <h3 className="text-xl font-medium text-gray-800 dark:text-gray-200 mt-4 mb-2">{children}</h3>,
+                      p: ({ children }) => <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{children}</p>,
                       ul: ({ children }) => <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>,
                       ol: ({ children }) => <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>,
-                      li: ({ children }) => <li className="text-gray-700">{children}</li>,
-                      blockquote: ({ children }) => <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600 mb-4">{children}</blockquote>,
+                      li: ({ children }) => <li className="text-gray-700 dark:text-gray-300">{children}</li>,
+                      blockquote: ({ children }) => <blockquote className="border-l-4 border-blue-500 dark:border-blue-400 pl-4 italic text-gray-600 dark:text-gray-400 mb-4">{children}</blockquote>,
                       code: ({ children, className }) => {
                         const isInline = !className;
                         return isInline ? (
-                          <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono text-gray-800">{children}</code>
+                          <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-sm font-mono text-gray-800 dark:text-gray-200">{children}</code>
                         ) : (
-                          <code className={`${className} block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto`}>
+                          <code className={`${className} block bg-gray-900 dark:bg-gray-950 text-gray-100 p-4 rounded-lg overflow-x-auto`}>
                             {children}
                           </code>
                         );
                       },
                       pre: ({ children }) => <pre className="mb-4">{children}</pre>,
-                      a: ({ children, href }) => <a href={href} className="text-blue-600 hover:text-blue-800 underline">{children}</a>,
+                      a: ({ children, href }) => <a href={href} className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">{children}</a>,
                       strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
                       em: ({ children }) => <em className="italic">{children}</em>,
                     }}
@@ -235,7 +235,7 @@ export default function EditPostPage() {
                     {content}
                   </ReactMarkdown>
                 ) : (
-                  <div className="text-gray-500 italic">Nothing to preview yet...</div>
+                  <div className="text-gray-500 dark:text-gray-400 italic">Nothing to preview yet...</div>
                 )}
               </div>
             ) : (
@@ -244,7 +244,7 @@ export default function EditPostPage() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={20}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
                 placeholder="Write your post content in Markdown..."
                 required
               />
@@ -252,20 +252,20 @@ export default function EditPostPage() {
           </div>
 
           {/* Publish Options */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50 p-6">
             <div className="flex items-center">
               <input
                 type="checkbox"
                 id="published"
                 checked={published}
                 onChange={(e) => setPublished(e.target.checked)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded"
               />
-              <label htmlFor="published" className="ml-2 block text-sm text-gray-700">
+              <label htmlFor="published" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                 Publish this post
               </label>
             </div>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               {published 
                 ? 'This post will be visible to everyone.' 
                 : 'This post will be saved as a draft and won\'t be visible to others.'}
@@ -277,7 +277,7 @@ export default function EditPostPage() {
             <button
               type="button"
               onClick={() => router.back()}
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-medium"
+              className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium"
               disabled={updatePost.isPending}
             >
               Cancel
@@ -285,7 +285,7 @@ export default function EditPostPage() {
             <button
               type="submit"
               disabled={updatePost.isPending || !title.trim() || !content.trim()}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-md font-medium flex items-center"
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white rounded-md font-medium flex items-center"
             >
               {updatePost.isPending && <LoadingSpinner size="sm" className="mr-2" />}
               Update Post
