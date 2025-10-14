@@ -51,7 +51,7 @@ export default function CategoriesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* <Navbar /> */}
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading categories..." />
@@ -63,7 +63,7 @@ export default function CategoriesPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* <Navbar /> */}
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
@@ -134,17 +134,17 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">      
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">      
       <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Categories</h1>
-            <p className="text-gray-600">Manage your blog categories</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Categories</h1>
+            <p className="text-gray-600 dark:text-gray-400">Manage your blog categories</p>
           </div>
           <button
             onClick={() => setIsCreating(true)}
-            className="mt-4 sm:mt-0 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-semibold"
+            className="mt-4 sm:mt-0 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white px-6 py-2 rounded-md font-semibold"
           >
             New Category
           </button>
@@ -152,11 +152,11 @@ export default function CategoriesPage() {
 
         {/* Create New Category Form */}
         {isCreating && (
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Create New Category</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50 p-6 mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Create New Category</h2>
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div>
-                <label htmlFor="new-name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="new-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Name *
                 </label>
                 <input
@@ -164,13 +164,13 @@ export default function CategoriesPage() {
                   id="new-name"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Enter category name..."
                   required
                 />
               </div>
               <div>
-                <label htmlFor="new-description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="new-description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Description
                 </label>
                 <textarea
@@ -178,7 +178,7 @@ export default function CategoriesPage() {
                   value={newCategoryDescription}
                   onChange={(e) => setNewCategoryDescription(e.target.value)}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Enter category description..."
                 />
               </div>
@@ -186,7 +186,7 @@ export default function CategoriesPage() {
                 <button
                   type="submit"
                   disabled={createCategory.isPending || !newCategoryName.trim()}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium flex items-center"
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white px-4 py-2 rounded-md font-medium flex items-center"
                 >
                   {createCategory.isPending && <LoadingSpinner size="sm" className="mr-2" />}
                   Create Category
@@ -198,7 +198,7 @@ export default function CategoriesPage() {
                     setNewCategoryName('');
                     setNewCategoryDescription('');
                   }}
-                  className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md font-medium"
+                  className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 px-4 py-2 rounded-md font-medium"
                 >
                   Cancel
                 </button>
@@ -208,16 +208,16 @@ export default function CategoriesPage() {
         )}
 
         {/* Categories List */}
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-700/50">
           {categories && categories.length > 0 ? (
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
               {categories.map((category) => (
                 <div key={category.id} className="p-6">
                   {editingId === category.id ? (
                     // Edit Form
                     <form onSubmit={handleUpdateSubmit} className="space-y-4">
                       <div>
-                        <label htmlFor="edit-name" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="edit-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                           Name *
                         </label>
                         <input
@@ -225,12 +225,12 @@ export default function CategoriesPage() {
                           id="edit-name"
                           value={editCategoryName}
                           onChange={(e) => setEditCategoryName(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           required
                         />
                       </div>
                       <div>
-                        <label htmlFor="edit-description" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="edit-description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                           Description
                         </label>
                         <textarea
@@ -238,14 +238,14 @@ export default function CategoriesPage() {
                           value={editCategoryDescription}
                           onChange={(e) => setEditCategoryDescription(e.target.value)}
                           rows={3}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       </div>
                       <div className="flex gap-3">
                         <button
                           type="submit"
                           disabled={updateCategory.isPending || !editCategoryName.trim()}
-                          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium flex items-center"
+                          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white px-4 py-2 rounded-md font-medium flex items-center"
                         >
                           {updateCategory.isPending && <LoadingSpinner size="sm" className="mr-2" />}
                           Update
@@ -253,7 +253,7 @@ export default function CategoriesPage() {
                         <button
                           type="button"
                           onClick={handleCancelEdit}
-                          className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md font-medium"
+                          className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 px-4 py-2 rounded-md font-medium"
                         >
                           Cancel
                         </button>
@@ -263,14 +263,14 @@ export default function CategoriesPage() {
                     // Display Mode
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
                           {category.name}
                         </h3>
                         {category.description && (
-                          <p className="text-gray-600 mb-2">{category.description}</p>
+                          <p className="text-gray-600 dark:text-gray-400 mb-2">{category.description}</p>
                         )}
-                        <div className="text-sm text-gray-500">
-                          <span className="bg-gray-100 px-2 py-1 rounded">
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <span className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded">
                             /{category.slug}
                           </span>
                         </div>
@@ -278,13 +278,13 @@ export default function CategoriesPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEdit(category)}
-                          className="text-blue-600 hover:text-blue-800 font-medium"
+                          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDelete(category.id, category.name)}
-                          className="text-red-600 hover:text-red-800 font-medium"
+                          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium"
                           disabled={deleteCategory.isPending}
                         >
                           Delete
@@ -297,18 +297,18 @@ export default function CategoriesPage() {
             </div>
           ) : (
             <div className="p-12 text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No categories yet</h3>
-              <p className="text-gray-600 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No categories yet</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 Create your first category to organize your blog posts.
               </p>
               <button
                 onClick={() => setIsCreating(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-semibold"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white px-6 py-2 rounded-md font-semibold"
               >
                 Create First Category
               </button>

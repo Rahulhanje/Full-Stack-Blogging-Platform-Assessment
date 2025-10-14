@@ -19,7 +19,7 @@ export default function BlogPostPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <LoadingState message="Loading blog post..." />
         </div>
@@ -29,7 +29,7 @@ export default function BlogPostPage() {
 
   if (error || !post) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         
         <div className="max-w-4xl mx-auto px-4 py-8 pt-24">
           <ErrorState 
@@ -38,7 +38,7 @@ export default function BlogPostPage() {
             onRetry={() => refetch()}
           />
           <div className="text-center mt-4">
-            <Link href="/blog" className="text-blue-600 hover:text-blue-800">
+            <Link href="/blog" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
               ← Back to Blog
             </Link>
           </div>
@@ -49,22 +49,22 @@ export default function BlogPostPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <article className="max-w-4xl mx-auto px-4 py-8 pt-24">
         {/* Back Link */}
         <div className="mb-8">
-          <Link href="/blog" className="text-blue-600 hover:text-blue-800 font-medium">
+          <Link href="/blog" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium">
             ← Back to Blog
           </Link>
         </div>
 
         {/* Post Header */}
         <header className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             {post.title}
           </h1>
           
-          <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-6">
+          <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400 mb-6">
             <time dateTime={new Date(post.createdAt).toISOString()}>
               {formatDate(post.createdAt)}
             </time>
@@ -85,7 +85,7 @@ export default function BlogPostPage() {
                 <Link
                   key={category.id}
                   href={`/blog?category=${category.id}`}
-                  className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors"
+                  className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
                 >
                   {category.name}
                 </Link>
@@ -95,34 +95,34 @@ export default function BlogPostPage() {
         </header>
 
         {/* Post Content */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-700/50 p-8 mb-8">
           <div className="prose prose-lg max-w-none">
             <ReactMarkdown
               components={{
-                h1: ({ children }) => <h1 className="text-3xl font-bold text-gray-900 mb-4 mt-8">{children}</h1>,
-                h2: ({ children }) => <h2 className="text-2xl font-bold text-gray-900 mb-3 mt-6">{children}</h2>,
-                h3: ({ children }) => <h3 className="text-xl font-bold text-gray-900 mb-2 mt-4">{children}</h3>,
-                p: ({ children }) => <p className="text-gray-700 mb-4 leading-relaxed">{children}</p>,
-                ul: ({ children }) => <ul className="list-disc list-inside mb-4 text-gray-700">{children}</ul>,
-                ol: ({ children }) => <ol className="list-decimal list-inside mb-4 text-gray-700">{children}</ol>,
+                h1: ({ children }) => <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 mt-8">{children}</h1>,
+                h2: ({ children }) => <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 mt-6">{children}</h2>,
+                h3: ({ children }) => <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 mt-4">{children}</h3>,
+                p: ({ children }) => <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{children}</p>,
+                ul: ({ children }) => <ul className="list-disc list-inside mb-4 text-gray-700 dark:text-gray-300">{children}</ul>,
+                ol: ({ children }) => <ol className="list-decimal list-inside mb-4 text-gray-700 dark:text-gray-300">{children}</ol>,
                 li: ({ children }) => <li className="mb-1">{children}</li>,
                 blockquote: ({ children }) => (
-                  <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600 mb-4">
+                  <blockquote className="border-l-4 border-blue-500 dark:border-blue-400 pl-4 italic text-gray-600 dark:text-gray-400 mb-4">
                     {children}
                   </blockquote>
                 ),
                 code: ({ children }) => (
-                  <code className="bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-sm font-mono">
+                  <code className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-1 py-0.5 rounded text-sm font-mono">
                     {children}
                   </code>
                 ),
                 pre: ({ children }) => (
-                  <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+                  <pre className="bg-gray-900 dark:bg-gray-950 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
                     {children}
                   </pre>
                 ),
                 a: ({ href, children }) => (
-                  <a href={href} className="text-blue-600 hover:text-blue-800 underline">
+                  <a href={href} className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">
                     {children}
                   </a>
                 ),
@@ -134,21 +134,21 @@ export default function BlogPostPage() {
         </div>
 
         {/* Post Navigation */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-700/50 p-6">
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Enjoyed this post?
             </h3>
             <div className="space-x-4">
               <Link
                 href="/blog"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white px-6 py-2 rounded-md font-medium"
               >
                 Read More Posts
               </Link>
               <Link
                 href="/dashboard"
-                className="border border-gray-300 hover:border-gray-400 text-gray-700 px-6 py-2 rounded-md font-medium"
+                className="border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 px-6 py-2 rounded-md font-medium"
               >
                 Write Your Own
               </Link>
